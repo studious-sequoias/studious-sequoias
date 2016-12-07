@@ -1,12 +1,13 @@
 # Project Name
 
 > Pithy project description
+> TETRIS with leader boards and names
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner __: Zachary Weidenbach
+  - __Scrum Master__: Casey Hungler
+  - __Development Team Members__: Suhail Idrees, Steven Jing
 
 ## Table of Contents
 
