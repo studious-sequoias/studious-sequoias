@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > Tetris
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > People who like to fit shapes together for fun
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Shapes are falling from the ceiling!  If the room fills up, you will lose!  You can clear rows by filling them completely.  Don't get stuck.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > Boredom.  Don't have any friends?  Bad at geometry?
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > Play this game.  You won't be bored.  You still won't have any friends, but you might be better at geometry.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > "I like Tetris."  --dev team
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Open our app and start playing!
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "Tetris destroyed my marriage.  I regret nothing."
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Win forever.  Become a boss at life.
