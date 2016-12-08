@@ -12,7 +12,7 @@ angular.module('tetris.services', [])
   var X = 0;
   var Y = 1;
 
-  this.piece = [[0, 0], [1, 0], [1, 1], [2, 1]];
+  this.piece = [[0, 0]];
 
   this.start = function() {
     return [2, 0];
@@ -38,10 +38,7 @@ angular.module('tetris.services', [])
     //Place the active piece on the field
     mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], 1));
     
-    //this.rendered = renderedField;
-    //console.log(JSON.stringify(this.rendered));
     this.renderCB(renderedField);
-    //return renderedField;
   };
 
   this.checkVerticalConflicts = function(piece, anchor, field) {
@@ -76,6 +73,7 @@ angular.module('tetris.services', [])
     } else {
       //Move anchor down a row
       this.anchor[Y]++;
+      console.log(interval);
       setTimeout(this.tick.bind(this, piece, anchor, field, interval), interval);
     }
 
