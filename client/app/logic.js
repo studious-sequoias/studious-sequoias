@@ -74,6 +74,8 @@ var tick = function(piece, anchor, field, interval) {
 
 };
 
+var rendered = field;
+
 var anchor = start();
 setValAtCoords(field, 2, 3, 1);
 tick(piece, anchor, field, 1000);
