@@ -9,6 +9,8 @@ mongoose.connect('mongodb://localhost: 27017/tetris', function(err, db) {
 	}
 })
 
+app.use(express.static(__dirname + '/../client'));
+
 app.get('/users', function(req, res) {
 	db.userdata.find();
 	res.send('hello world')
