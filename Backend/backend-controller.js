@@ -2,17 +2,43 @@
 var mongoose = require('mongoose');
 
 // define model
-var Users = mongoose.model('Users', {name:String, score: Number})
+var User = mongoose.model("User", {
+	name: String,
+	score: Number
+});
 
-module.exports.create = function(req,res) {
-	var user = new User();
-	user.save(function(err) {
-		if(err) return handleError(err)
+
+module.exports.listUsers = function(req, res) {
+	User.find({}, function(err, users) {
+		res.send(users)
 	})
 }
 
-module.exports.list = function(req, res) {
-	Users.find({}, function(err, results) {
-		res.json(results)
-	})
+// define create/list functions
+module.exports.createUser = function(req,res) {
+	console.log(req.body)
+	function createUser(name,score){
+		//create model
+		var user = new User({name: name, score: score});
+		//save user to mongodb
+		user.save(function (err, max) {
+			if(err) return console.error(err);
+		});
+	}
+
+	createUser(req.body.name, req.body.score)
+	
+	res.sendStatus(201);
 }
+
+
+
+
+
+function removeUser(name){
+	User.find({'name':name}).remove().exec()
+}
+
+
+
+
