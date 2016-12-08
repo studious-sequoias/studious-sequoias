@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row" ng-repeat="row in matrix">
-      <span ng-repeat="spot in row track by $index">{{ spot }}</span>
+      <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>
 </div>
 <!-- <pre>{{matrix}}</pre> -->

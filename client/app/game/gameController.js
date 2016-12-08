@@ -18,7 +18,8 @@ angular.module('tetris.game', [])
   };
 
   logic.anchor = logic.start();
-  logic.tick(logic.piece, logic.anchor, logic.field, 1000);
+  logic.setValAtCoords(logic.field, 3, 12, 'r');
+  logic.tick(logic.piece, logic.anchor, logic.field, 800);
 
   var color = function(spot) {
     console.log(spot);

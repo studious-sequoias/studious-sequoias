@@ -2,9 +2,9 @@
 angular.module('tetris.services', [])
 
 .service('logic', function() {
-  this.row = [0, 0, 0, 0, 0];
+  this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   this.field = [];
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 13; i++) {
     this.field.push(this.row.slice());
   }
   this.rendered = this.field;
@@ -12,7 +12,8 @@ angular.module('tetris.services', [])
   var X = 0;
   var Y = 1;
 
-  this.piece = [[0, 0]];
+  this.piece = [[0, 0], [1, 0], [1, 1], [2, 1]];
+  this.pieceColor = 'g';
 
   this.start = function() {
     return [2, 0];
@@ -36,7 +37,7 @@ angular.module('tetris.services', [])
     //Get the coordinates of the active piece
     var mappedPiece = this.mapPieceToAnchor(piece, anchor);
     //Place the active piece on the field
-    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], 1));
+    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor));
     
     this.renderCB(renderedField);
   };
@@ -63,7 +64,7 @@ angular.module('tetris.services', [])
       //Current piece is dead
       //Make piece a part of field at its current position
       var mappedPiece = this.mapPieceToAnchor(piece, anchor);
-      mappedPiece.forEach(coord => this.setValAtCoords(field, anchor[X], anchor[Y], 1));
+      mappedPiece.forEach(coord => this.setValAtCoords(field, anchor[X], anchor[Y], this.pieceColor));
 
       //TODO:  Clear rows if filled
       //TODO:  If game not over
