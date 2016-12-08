@@ -1,0 +1,25 @@
+{
+  "name": "tetris",
+  "homepage": "https://github.com/stevenjing/studious-sequoias",
+  "authors": [
+    "Steven Jing",
+    "Zachary Weidenbach",
+    "Casey Hungler",
+    "Suhail Idrees"
+  ],
+  "description": "Fit shapes together for fun!",
+  "main": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.9",
+    "angular-route": "^1.5.9"
+  }
+}
