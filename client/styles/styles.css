@@ -1,3 +1,42 @@
+.row{
+  margin:0;
+  height: 20px;
+}
+
+.block {
+  display: inline-block;
+  width: 20px;
+  height: 100%;
+  background-color: lightgray ;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.block-r {
+  background-color: red;
+  border: 1px solid gray;
+}
+
+.block-y {
+  background-color: yellow;
+  border: 1px solid gray;
+}
+
+.block-b {
+  background-color: blue;
+  border: 1px solid gray;
+}
+
+.block-g {
+  background-color: lightgreen;
+  border: 1px solid gray;
+}
+
+.block-o { 
+  background-color: orange;
+  border: 1px solid gray;
+}
+
 /*span {
   float: left;
   width: 40px;
