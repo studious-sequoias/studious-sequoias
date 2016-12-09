@@ -1,6 +1,14 @@
 <div class="scores">
-  <a >Refresh</a>
-  <div ng-repeat="score in data.scores">
-    {{ score }}
-  </div>
+
+  <table>
+    <tr>
+      <th>USER</th>
+      <th>SCORE</th>
+    </tr>
+    <tr ng-repeat="user in data.users">
+      <td>{{ user.name }}</td>
+      <td>{{ user.score }}</td>
+    </tr>
+  </table>
+
 </div>
