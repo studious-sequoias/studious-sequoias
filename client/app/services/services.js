@@ -128,6 +128,15 @@ angular.module('tetris.services', [])
 
       //TODO:  Clear rows if filled
       //TODO:  If game not over
+      //If any cell in the top row is filled:
+      if (field[0].some( col => col ? true : false)) {
+        //Game over
+        console.log('Game Over');
+      } else {
+        this.randomPiece();
+        this.anchor = this.start();
+        setTimeout(this.tick.bind(this, this.piece, this.anchor, field, interval), interval);
+      }
 
         //TODO: Add next piece
 
