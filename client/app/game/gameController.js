@@ -7,8 +7,6 @@ angular.module('tetris.game', [])
   $scope.skip = true;
 
   logic.renderCB = function(matrix) {
-    console.log('CALLBACKS!!!', JSON.stringify(matrix));
-    // $scope.$apply();
     $scope.matrix = matrix;
     if (!$scope.skip) {
       $scope.$apply();
@@ -17,13 +15,14 @@ angular.module('tetris.game', [])
     }
   };
 
+  //Start:
   logic.anchor = logic.start();
-  logic.setValAtCoords(logic.field, 3, 12, 'r');
+  logic.randomPiece();
   logic.tick(logic.piece, logic.anchor, logic.field, 800);
-
-  var color = function(spot) {
-    console.log(spot);
-    return spot === 1 ? 'red' : 'blue';
-  };
+  
+  // var color = function(spot) {
+  //   console.log(spot);
+  //   return spot === 1 ? 'red' : 'blue';
+  // };
 
 }); 
