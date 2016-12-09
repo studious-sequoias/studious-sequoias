@@ -12,42 +12,46 @@ angular.module('tetris.services', [])
   var X = 0;
   var Y = 1;
 
+  ///////////////////
+  //PIECE DEFINITIONS
+  ///////////////////
   var square1 = [[0, 0], [1, 0], [0, 1], [1, 1]];
   var square = [square1];
 
   var normalL1 = [[0, 0], [0, 1], [0, 2], [1, 2]];
-  var normalL2 = normalL1; //TODO
-  var normalL3 = normalL1; //TODO
-  var normalL4 = normalL1; //TODO
+  var normalL2 = [[-1, 1], [0, 1], [1, 1], [-1, 2]];
+  var normalL3 = [[-1, 0], [0, 0], [0, 1], [0, 2]];
+  var normalL4 = [[-1, 1], [0, 1], [1, 1], [1, 0]];
   var normalL = [normalL1, normalL2, normalL3, normalL4];
 
   var reversedL1 = [[0, 0], [0, 1], [0, 2], [-1, 2]];
-  var reversedL2 = reversedL1; //TODO
-  var reversedL3 = reversedL1; //TODO
-  var reversedL4 = reversedL1; //TODO
+  var reversedL2 = [[-1, 0], [-1, 1], [0, 1], [1, 1]];
+  var reversedL3 = [[0, 0], [1, 0], [0, 1], [0, 2]];
+  var reversedL4 = [[-1, 1], [0, 1], [1, 1], [1, 2]];
   var reversedL = [reversedL1, reversedL2, reversedL3, reversedL4];
   
-  var line1 = [[0, 0], [1, 0], [2, 0], [3, 0]];
-  var line2 = [[0, 1], [0, 2], [0, 3], [0, 4]];
-  var line = [line1, line2];
+  var line1 = [[-1, 0], [0, 0], [1, 0], [2, 0]];
+  var line2 = [[0, -1], [0, 0], [0, 1], [0, 2]];
+  var line3 = [[-2, 0], [-1, 0], [0, 0], [1, 0]];
+  var line = [line1, line2, line3, line2];
 
   var tee1 = [[-1, 0], [0, 0], [1, 0], [0, 1]];
-  var tee2 = tee1; //TODO
-  var tee3 = tee1; //TODO
-  var tee4 = tee1; //TODO
+  var tee2 = [[0, -1], [-1, 0], [0, 0], [0, 1]];
+  var tee3 = [[0, -1], [-1, 0], [0, 0], [1, 0]];
+  var tee4 = [[0, -1], [0, 0], [0, 1], [1, 0]];
   var tee = [tee1, tee2, tee3, tee4];
 
-  var normalZ1 = [[0, 0], [1, 0], [1, 1], [2, 1]];
-  var normalZ2 = normalZ1; //TODO
-  var normalZ3 = normalZ1; //TODO
-  var normalZ4 = normalZ1; //TODO
+  var normalZ1 = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+  var normalZ2 = [[0, -1], [0, 0], [-1, 0], [-1, 1]];
+  var normalZ3 = [[-1, -1], [0, -1], [0, 0], [1, 0]];
+  var normalZ4 = [[1, -1], [0, 0], [1, 0], [0, 1]];
   var normalZ = [normalZ1, normalZ2, normalZ3, normalZ4];
 
-  var reversedZ1 = [[0, 1], [1, 1], [1, 0], [2, 0]];
-  var reversedZ2 = reversedZ1; //TODO
-  var reversedZ3 = reversedZ1; //TODO
-  var reversedZ4 = reversedZ1; //TODO
-  var reversedZ = [reversedZ1, reversedZ2, reversedZ3, reversedZ4];
+  var reversedZ1 = [[-1, 1], [0, 1], [0, 0], [1, 0]];
+  var reversedZ2 = [[-1, -1], [-1, 0], [0, 0], [0, 1]];
+  var reversedZ3 = [[-1, 0], [0, 0], [0, -1], [1, -1]];
+  var reversedZ4 = [[0, -1], [0, 0], [1, 0], [1, 1]];
+  var reversedZ = [reversedZ1, reversedZ2];
 
   this.pieces = [square, normalL, reversedL, line, tee, normalZ, reversedZ];
   this.colors = ['r', 'y', 'y', 'b', 'o', 'g', 'g'];
@@ -56,7 +60,7 @@ angular.module('tetris.services', [])
   this.pieceColor = 'g';
 
   this.start = function() {
-    return [2, 0];
+    return [4, 0];
   };
 
   this.randomPiece = function() {
@@ -64,17 +68,14 @@ angular.module('tetris.services', [])
     this.currentPiece.rotate = 0;
     this.piece = this.pieces[this.currentPiece.piece][0];
     this.pieceColor = this.colors[this.currentPiece.piece];
-    console.log(this.pieceColor);
   };
 
   this.rotatePiece = function() {
-    console.log(this.currentPiece);
     if (this.currentPiece.rotate < this.pieces[this.currentPiece.piece].length - 1) {
       this.currentPiece.rotate++;
     } else {
       this.currentPiece.rotate = 0;
     }
-    console.log(this.currentPiece);
     this.piece = this.pieces[this.currentPiece.piece][this.currentPiece.rotate];
   };
 
@@ -91,7 +92,6 @@ angular.module('tetris.services', [])
   };
 
   this.renderField = function(piece, anchor, field) {
-    console.log(JSON.stringify(this.piece));
     //Create a copy of the field with only static pieces on the bottom
     var renderedField = JSON.parse(JSON.stringify(field));
     //Get the coordinates of the active piece
@@ -123,23 +123,20 @@ angular.module('tetris.services', [])
     if (this.checkVerticalConflicts(this.piece, anchor, field)) {
       //Current piece is dead
       //Make piece a part of field at its current position
-      var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
-      mappedPiece.forEach(coord => this.setValAtCoords(field, anchor[X], anchor[Y], this.pieceColor));
-
+      var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
+      mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
       //TODO:  Clear rows if filled
-      //TODO:  If game not over
+
       //If any cell in the top row is filled:
       if (field[0].some( col => col ? true : false)) {
         //Game over
         console.log('Game Over');
       } else {
+        //Next piece
         this.randomPiece();
         this.anchor = this.start();
         setTimeout(this.tick.bind(this, this.piece, this.anchor, field, interval), interval);
       }
-
-        //TODO: Add next piece
-
     } else {
       //Move anchor down a row
       this.anchor[Y]++;
