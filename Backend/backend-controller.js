@@ -7,13 +7,11 @@ var User = mongoose.model("User", {
 	score: Number
 });
 
-
 module.exports.listUsers = function(req, res) {
 	User.find({}, function(err, users) {
 		res.send(users)
 	})
 }
-
 // define create/list functions
 module.exports.createUser = function(req,res) {
 	console.log(req.body)
@@ -30,15 +28,6 @@ module.exports.createUser = function(req,res) {
 	
 	res.sendStatus(201);
 }
-
-
-
-
-
-function removeUser(name){
-	User.find({'name':name}).remove().exec()
-}
-
 
 
 

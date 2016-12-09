@@ -14,7 +14,7 @@ db.once('open', function() {
 });
 
 //get static html page
-app.use(express.static(__dirname + '../client'))
+app.use(express.static(__dirname + '/../client'))
 
 // just for the request body data
 app.use(bodyParser.json());
@@ -22,11 +22,6 @@ app.use(bodyParser.json());
 app.get('/api/users', backEndController.listUsers);
 app.post('/api/users', backEndController.createUser);
 
-
 app.listen(3000, function() {
 	console.log("Yay, Node server is listening!")
 })
-
-
-
-
