@@ -80,4 +80,52 @@ angular.module('tetris.services', [])
 
   };
   
+})
+
+.service('Scores', function($http) {
+
+  this.getScores = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/users',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    }).then(function (response) {
+      console.log('response', response.data);
+      return response.data;
+    });
+  }
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
