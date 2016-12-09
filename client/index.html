@@ -1,6 +1,6 @@
 <!-- client/index.html -->
 <!DOCTYPE html>
-<html >
+<html>
   <head>
 
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
 
 
   </head>
-  <body ng-app="tetris">
+  <body ng-app="tetris" ng-controller='GameController' on-Keydown='onKeydown'>
 
     <h1>TETRIS</h1>
 
@@ -27,6 +27,5 @@
     <script src="app/game/gameController.js"></script>
     <script src="app/services/services.js"></script>
     <script src="app/app.js"></script>
-
   </body>
 </html>
