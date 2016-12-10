@@ -39,13 +39,16 @@ angular.module('tetris.game', [])
   $scope.onKeydown = function(keycode) {
     if (keycode === 37) { //LEFT
       console.log('left');
+      logic.moveLeft();
     } else if (keycode === 38) { //UP
       console.log('up');
       logic.rotatePiece();
     } else if (keycode === 39) { //RIGHT
       console.log('right');
+      logic.moveRight();
     } else if (keycode === 40) { //DOWN
       console.log('down');
+      logic.moveDown();
     }
   };
 
