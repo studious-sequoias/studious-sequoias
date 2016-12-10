@@ -9,6 +9,8 @@
   },
   "scripts": {
     "start": "nodemon server.js 2>&1 | ../log/.predate.sh | tee -a ../log/server.log ",
+    "start-blind" : "nodemon server.js 2>&1 | ../log/.predate.sh >> ../log/server.log & ",
+    "stop": "killall -9 node",
     "tail": "tail -f ../log/server.log"
   }
 }
