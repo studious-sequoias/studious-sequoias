@@ -54,8 +54,8 @@ angular.module('tetris.services', [])
 
   this.activeGame = false;
 
+  this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   this.clearField = function() {
-    this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.field = [];
     for (var i = 0; i < 13; i++) {
       this.field.push(this.row.slice());
@@ -75,12 +75,23 @@ angular.module('tetris.services', [])
   };
 
   this.rotatePiece = function() {
+    var nextPiece = {piece: this.currentPiece.piece};
+    var nextPieceDef = [];
     if (this.currentPiece.rotate < this.pieces[this.currentPiece.piece].length - 1) {
-      this.currentPiece.rotate++;
+      nextPiece.rotate = this.currentPiece.rotate + 1;
     } else {
-      this.currentPiece.rotate = 0;
+      nextPiece.rotate = 0;
     }
-    this.piece = this.pieces[this.currentPiece.piece][this.currentPiece.rotate];
+    nextPieceDef = this.pieces[nextPiece.piece][nextPiece.rotate];
+
+    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
+      return;
+    }
+    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
+      return;
+    }
+    this.currentPiece = nextPiece;
+    this.piece = nextPieceDef;
     this.renderField(this.piece, this.anchor, this.field);
   };
 
@@ -109,14 +120,14 @@ angular.module('tetris.services', [])
 
   this.checkVerticalConflicts = function(piece, anchor, field) {
     var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
-    //If any element of the piece is currently on the bottom row, 
-    if (mappedPiece.some(coord => coord[Y] === field.length - 1)) {
+    //If any element of the piece is out of bounds, 
+    if (mappedPiece.some(coord => coord[Y] >= field.length)) {
       //The piece has bottomed out
       return true;
     }
 
     //If any element of the piece is going to touch a static block
-    if (mappedPiece.some(coord => this.getValAtCoords(field, coord[X], coord[Y] + 1))) {
+    if (mappedPiece.some(coord => this.getValAtCoords(field, coord[X], coord[Y]))) {
       //The piece has landed
       return true;
     }
@@ -149,7 +160,7 @@ angular.module('tetris.services', [])
 
   this.checkHorizontalConflicts = function(piece, anchor, field) {
     var mappedPiece = this.mapPieceToAnchor(piece, anchor);
-    if (mappedPiece.some(coord => coord[X] < 0 || coord[X] >= field[0].length)) {
+    if (mappedPiece.some(coord => coord[X] < 0 || coord[X] >= this.row.length)) {
       return true;
     }
 
@@ -163,14 +174,23 @@ angular.module('tetris.services', [])
   };
 
   this.tick = function(piece, anchor, field, interval) {
-    this.interval = interval
+    this.interval = interval;
     this.renderField(this.piece, anchor, field);
-    if (this.checkVerticalConflicts(this.piece, this.anchor, this.field)) {
+    var proposedAnchor = this.anchor.slice();
+    proposedAnchor[Y]++;
+    if (this.checkVerticalConflicts(this.piece, proposedAnchor, this.field)) {
       //Current piece is dead
       //Make piece a part of field at its current position
       var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
       mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
-      //TODO:  Clear rows if filled
+      
+      //Clear completed rows
+      field.forEach(function(row, j) {
+        if (row.every(cell => cell ? true : false)) {
+          field.splice(j, 1);
+          field.unshift(this.row.slice());
+        }
+      }.bind(this));
 
       //If any cell in the top row is filled:
       if (field[0].some( col => col ? true : false)) {
@@ -185,7 +205,7 @@ angular.module('tetris.services', [])
       }
     } else {
       //Move anchor down a row
-      this.anchor[Y]++;
+      this.anchor = proposedAnchor;
       this.nextTick = setTimeout(this.tick.bind(this, this.piece, anchor, field, interval), interval);
     }
 
