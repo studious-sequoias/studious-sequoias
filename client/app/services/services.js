@@ -2,13 +2,6 @@
 angular.module('tetris.services', [])
 
 .service('logic', function() {
-  this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  this.field = [];
-  for (var i = 0; i < 13; i++) {
-    this.field.push(this.row.slice());
-  }
-  this.rendered = this.field;
-
   var X = 0;
   var Y = 1;
 
@@ -58,6 +51,17 @@ angular.module('tetris.services', [])
   this.currentPiece = {piece: 0, rotate: 0};
   this.piece = this.pieces[0][0];
   this.pieceColor = 'g';
+
+  this.activeGame = false;
+
+  this.clearField = function() {
+    this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.field = [];
+    for (var i = 0; i < 13; i++) {
+      this.field.push(this.row.slice());
+    }
+    this.rendered = this.field;
+  };
 
   this.start = function() {
     return [4, 0];
@@ -131,6 +135,7 @@ angular.module('tetris.services', [])
       if (field[0].some( col => col ? true : false)) {
         //Game over
         console.log('Game Over');
+        this.activeGame = false;
       } else {
         //Next piece
         this.randomPiece();

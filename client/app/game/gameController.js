@@ -16,9 +16,13 @@ angular.module('tetris.game', [])
   };
 
   //Start:
-  logic.anchor = logic.start();
-  logic.randomPiece();
-  logic.tick(logic.piece, logic.anchor, logic.field, 500);
+  if (!logic.activeGame) {
+    logic.anchor = logic.start();
+    logic.clearField();
+    logic.randomPiece();
+    logic.tick(logic.piece, logic.anchor, logic.field, 500);
+    logic.activeGame = true;
+  }
 
   // var color = function(spot) {
   //   console.log(spot);
