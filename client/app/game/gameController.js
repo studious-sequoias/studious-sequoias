@@ -4,6 +4,8 @@ angular.module('tetris.game', [])
 .controller('GameController', function($scope, logic) {
   $scope.matrix = logic.rendered;
 
+  $scope.data = logic.data;
+
   $scope.skip = true;
 
   logic.renderCB = function(matrix) {

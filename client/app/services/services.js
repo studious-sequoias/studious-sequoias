@@ -53,6 +53,8 @@ angular.module('tetris.services', [])
   this.pieceColor = 'g';
 
   this.activeGame = false;
+  this.data = {};
+  this.data.score = 0;
 
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   this.clearField = function() {
@@ -185,12 +187,20 @@ angular.module('tetris.services', [])
       mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
       
       //Clear completed rows
+      var score = 0;
       field.forEach(function(row, j) {
         if (row.every(cell => cell ? true : false)) {
           field.splice(j, 1);
           field.unshift(this.row.slice());
+          score += 100;
+        }
+        //If one move clears four rows, that move scores double (800 pts);
+        if (score === 400) {
+          score *= 2;
         }
       }.bind(this));
+      this.data.score += score;
+      console.log('SCORE', this.data.score);
 
       //If any cell in the top row is filled:
       if (field[0].some( col => col ? true : false)) {
