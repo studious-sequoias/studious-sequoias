@@ -3,7 +3,8 @@ angular.module('tetris', [
   'tetris.game',
   'tetris.scores',
   'tetris.services',
-  'ngRoute'
+  'ngRoute',
+  'mydirectives'
 ])
 
 .config(function($routeProvider) {
