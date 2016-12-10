@@ -81,6 +81,7 @@ angular.module('tetris.services', [])
       this.currentPiece.rotate = 0;
     }
     this.piece = this.pieces[this.currentPiece.piece][this.currentPiece.rotate];
+    this.renderField(this.piece, this.anchor, this.field);
   };
 
   this.setValAtCoords = function(matrix, x, y, val) {
