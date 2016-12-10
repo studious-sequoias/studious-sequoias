@@ -22,7 +22,11 @@ angular.module('tetris.game', [])
     logic.randomPiece();
     logic.tick(logic.piece, logic.anchor, logic.field, 500);
     logic.activeGame = true;
+    // logic.renderField();
+  } else {
+    logic.renderField(logic.piece, logic.anchor, logic.field);
   }
+
 
   // var color = function(spot) {
   //   console.log(spot);
