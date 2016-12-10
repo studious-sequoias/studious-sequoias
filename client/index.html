@@ -8,12 +8,27 @@
 
     <!-- STYLES -->
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
 
 
   </head>
   <body ng-app="tetris" ng-controller='GameController' on-Keydown='onKeydown'>
 
-    <h1>TETRIS</h1>
+    <h1>
+      <font color="#FF4136">T</font>
+      <font color="#FF851B">E</font>
+      <font color="#FFDC00">T</font>
+      <font color="#01FF70">R</font>
+      <font color="#39CCCC">I</font>
+      <font color="#B10DC9">S</font>
+    </h1>
+
+    <nav>
+      <ul>
+        <li><a href="#/game">GAME</a></li>
+        <li><a href="#/scores">HIGH SCORES</a></li>
+      </ul>
+    </nav>
 
     <!-- VIEW -->
     <div ng-view></div>
@@ -25,6 +40,7 @@
     <!-- ANGULAR CUSTOM -->
     <!-- <script src="app/logic.js"></script> -->
     <script src="app/game/gameController.js"></script>
+    <script src="app/scores/scoresController.js"></script>
     <script src="app/services/services.js"></script>
     <script src="app/app.js"></script>
   </body>
