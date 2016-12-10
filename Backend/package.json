@@ -3,7 +3,14 @@
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "mongoose": "^4.7.1"
+  },
+  "scripts": {
+    "start": "nodemon server.js 2>&1 | ../log/.predate.sh | tee -a ../log/server.log ",
+    "start-blind" : "nodemon server.js 2>&1 | ../log/.predate.sh >> ../log/server.log & ",
+    "stop": "killall -9 node",
+    "tail": "tail -f ../log/server.log"
   }
 }
