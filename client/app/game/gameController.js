@@ -25,17 +25,19 @@ angular.module('tetris.game', [])
   //   return spot === 1 ? 'red' : 'blue';
   // };
 
-  $scope.key;
+})
+.controller('ClickController', function($scope, logic) {
 
   $scope.onKeydown = function(keycode) {
-    if (keycode === 37) {
-      $scope.key = 'left';
-    } else if (keycode === 38) {
-      $scope.key = 'up';
-    } else if (keycode === 39) {
-      $scope.key = 'right';
-    } else if (keycode === 40) {
-      $scope.key = 'down';
+    if (keycode === 37) { //LEFT
+      console.log('left');
+    } else if (keycode === 38) { //UP
+      console.log('up');
+      logic.rotatePiece();
+    } else if (keycode === 39) { //RIGHT
+      console.log('right');
+    } else if (keycode === 40) { //DOWN
+      console.log('down');
     }
   };
 
