@@ -7,7 +7,7 @@
     "mongoose": "^4.7.1"
   },
   "scripts": {
-    "start": "pkill node && nodemon server.js 2>&1 | ../log/.predate.sh | tee -a ../log/server.log ",
+    "start": "nodemon server.js 2>&1 | ../log/.predate.sh | tee -a ../log/server.log ",
     "tail": "tail -f ../log/server.log"
   }
 }
