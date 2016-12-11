@@ -49,6 +49,11 @@ angular.module('tetris.game', [])
       logic.moveRight();
     } else if (keycode === 40) { //DOWN
       logic.moveDown();
+    } else if (keycode === 16) { //SHIFT
+      logic.swapPiece();
+      console.log('swap');
+    } else if (keycode === 32) { //SPACE
+      logic.dropPiece();
     }
   };
 

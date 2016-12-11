@@ -84,7 +84,7 @@ angular.module('tetris.services', [])
     piece = piece || this.currentPiece;
     return this.colors[piece.piece];
   };
-
+  
   //Begin game
   this.start = function() {
     this.resetAnchor();
@@ -107,6 +107,7 @@ angular.module('tetris.services', [])
   this.nextPiece = function() {
     this.currentPiece = this.pieceQueue.shift();
     this.pieceQueue.push(this.randomPiece());
+    this.holdLock = false;
   };
 
   this.moveLeft = function() {
@@ -132,6 +133,10 @@ angular.module('tetris.services', [])
     this.tick();
   };
 
+  this.dropPiece = function() {
+
+  };
+
   this.rotatePiece = function() {
     var nextPiece = {piece: this.currentPiece.piece};
     // var nextPieceDef = [];
@@ -151,6 +156,24 @@ angular.module('tetris.services', [])
     this.currentPiece = nextPiece;
     // this.piece = nextPieceDef;
     this.renderField();
+  };
+
+  this.swapPiece = function() {
+    if (!this.holdLock) {
+      this.cancelTick();
+      if (this.holdPiece) {
+        var temp = this.holdPiece;
+        this.holdPiece = this.currentPiece;
+        this.currentPiece = temp;
+      } else {
+        this.holdPiece = this.currentPiece;
+        this.nextPiece();
+      }
+      this.tick();
+      this.resetAnchor();
+      this.renderField();
+      this.holdLock = true;
+    }
   };
 
   this.setValAtCoords = function(matrix, x, y, val) {
@@ -177,12 +200,14 @@ angular.module('tetris.services', [])
 
   this.renderQueue = function() {
     var row = [0, 0, 0, 0, 0];
-    var queue = [];
+    var holdRow = ['hold', 'hold', 'hold', 'hold', 'hold'];
+    var queue = [holdRow.slice(), holdRow.slice(), holdRow.slice(), holdRow.slice(), holdRow.slice(), row.slice()];
     for (var i = 0; i < 4 * this.pieceQueue.length; i++) {
       queue.push(row.slice());
     }
-    this.pieceQueue.forEach(function(piece, i) {
-      var mappedPiece = this.mapPieceToAnchor(this.piece(piece), [2, 4 * i]);
+    var pieces = [this.holdPiece].concat(this.pieceQueue);
+    pieces.forEach(function(piece, i) {
+      var mappedPiece = this.mapPieceToAnchor(piece ? this.piece(piece) : [], [2, 4 * i + 2]);
       var color = this.pieceColor(piece);
       mappedPiece.forEach( coord => this.setValAtCoords(queue, coord[X], coord[Y], color));
     }.bind(this));

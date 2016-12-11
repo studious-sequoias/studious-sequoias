@@ -169,6 +169,10 @@ th {
   border: 1px solid black;
 }
 
+.mini-hold {
+  background-color: gray;
+}
+
 /* Info bars */
 #score {
   border: 6px solid black;
@@ -191,6 +195,7 @@ th {
   left: 7%;
   top: 34%;
   
+
 /*********** START AND GAMEOVER *****************/
 
 .nameEntry {
@@ -199,7 +204,6 @@ th {
 input[type=text] {
   box-sizing: border-box;
   font-size: 12pt;
-}
 
 
 /*span {
