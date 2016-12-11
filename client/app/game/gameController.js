@@ -26,7 +26,6 @@ angular.module('tetris.game', [])
   
 })
 .controller('ClickController', function($scope, logic) {
-
   $scope.onKeydown = function(keycode) {
     if (keycode === 37) { //LEFT
       logic.moveLeft();
