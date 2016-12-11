@@ -55,8 +55,8 @@ angular.module('tetris.services', [])
   this.pieces = [square, normalL, reversedL, line, tee, normalZ, reversedZ];
   this.colors = ['r', 'y', 'y', 'b', 'o', 'g', 'g'];
   this.currentPiece = {piece: 0, rotate: 0};
-  this.piece = this.pieces[0][0];
-  this.pieceColor = 'g';
+  //this.piece = this.pieces[0][0];
+  //this.pieceColor = 'g';
 
   this.activeGame = false;
   this.data = {};
@@ -75,49 +75,66 @@ angular.module('tetris.services', [])
     this.anchor = [Math.floor((this.row.length - 1) / 2), 0];
   };
 
+  this.piece = function(piece) {
+    piece = piece || this.currentPiece;
+    return this.pieces[piece.piece][piece.rotate];
+  };
+
+  this.pieceColor = function(piece) {
+    piece = piece || this.currentPiece;
+    return this.colors[piece.piece];
+  };
+
   //Begin game
   this.start = function() {
     this.resetAnchor();
     this.resetField();
-    this.randomPiece();
+    this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
+    // this.randomPiece();
     this.interval = 400;
     this.tick();
     this.activeGame = true;
   };
 
+  //Pseudoclassical factory function
   this.randomPiece = function() {
-    this.currentPiece.piece = Math.floor(Math.random() * this.pieces.length);
-    this.currentPiece.rotate = 0;
-    this.piece = this.pieces[this.currentPiece.piece][0];
-    this.pieceColor = this.colors[this.currentPiece.piece];
+    var piece = {};
+    piece.piece = Math.floor(Math.random() * this.pieces.length);
+    piece.rotate = 0;
+    return piece;
+  };
+
+  this.nextPiece = function() {
+    this.currentPiece = this.pieceQueue.shift();
+    this.pieceQueue.push(this.randomPiece());
   };
 
   this.moveLeft = function() {
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[X]--;
-    if (!this.checkHorizontalConflicts(this.piece, proposedAnchor, this.field)) {
+    if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
       this.anchor = proposedAnchor;
-      this.renderField(this.piece, this.anchor, this.field);
+      this.renderField();
     }
   };
 
   this.moveRight = function() {
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[X]++;
-    if (!this.checkHorizontalConflicts(this.piece, proposedAnchor, this.field)) {
+    if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
       this.anchor = proposedAnchor;
-      this.renderField(this.piece, this.anchor, this.field);
+      this.renderField();
     }
   };
 
   this.moveDown = function() {
-    clearTimeout(this.nextTick);
-    this.tick(this.piece, this.anchor, this.field, this.interval);
+    this.cancelTick();
+    this.tick();
   };
 
   this.rotatePiece = function() {
     var nextPiece = {piece: this.currentPiece.piece};
-    var nextPieceDef = [];
+    // var nextPieceDef = [];
     if (this.currentPiece.rotate < this.pieces[this.currentPiece.piece].length - 1) {
       nextPiece.rotate = this.currentPiece.rotate + 1;
     } else {
@@ -132,8 +149,8 @@ angular.module('tetris.services', [])
       return;
     }
     this.currentPiece = nextPiece;
-    this.piece = nextPieceDef;
-    this.renderField(this.piece, this.anchor, this.field);
+    // this.piece = nextPieceDef;
+    this.renderField();
   };
 
   this.setValAtCoords = function(matrix, x, y, val) {
@@ -152,15 +169,29 @@ angular.module('tetris.services', [])
     //Create a copy of the field with only static pieces on the bottom
     var renderedField = JSON.parse(JSON.stringify(this.field));
     //Get the coordinates of the active piece
-    var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
+    var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
     //Place the active piece on the field
-    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor));
-    this.renderCB(renderedField);
+    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor()));
+    this.renderCB(renderedField, this.renderQueue());
+  };
+
+  this.renderQueue = function() {
+    var row = [0, 0, 0, 0, 0];
+    var queue = [];
+    for (var i = 0; i < 4 * this.pieceQueue.length; i++) {
+      queue.push(row.slice());
+    }
+    this.pieceQueue.forEach(function(piece, i) {
+      var mappedPiece = this.mapPieceToAnchor(this.piece(piece), [2, 4 * i]);
+      var color = this.pieceColor(piece);
+      mappedPiece.forEach( coord => this.setValAtCoords(queue, coord[X], coord[Y], color));
+    }.bind(this));
+    return queue;
   };
 
   this.checkVerticalConflicts = function(piece, anchor) {
-    var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
-    //If any element of the piece is out of bounds,
+    var mappedPiece = this.mapPieceToAnchor(piece, anchor);
+    //If any element of the piece is out of bounds, 
     if (mappedPiece.some(coord => coord[Y] >= this.boardHeight)) {
       //The piece has bottomed out
       return true;
@@ -194,12 +225,18 @@ angular.module('tetris.services', [])
     this.renderField();
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[Y]++;
-    if (this.checkVerticalConflicts(this.piece, proposedAnchor, this.field)) {
+    if (this.checkVerticalConflicts(this.piece(), proposedAnchor, this.field)) {
       //Current piece is dead
       //Make piece a part of field at its current position
+<<<<<<< f01a1ef296ce87f4fc0e75deef36b707f6cfcbe8
       var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
       mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
 
+=======
+      var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
+      mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
+      
+>>>>>>> Implement piece queue
       //Clear completed rows
       var score = 0;
       this.field.forEach(function(row, j) {
@@ -222,7 +259,7 @@ angular.module('tetris.services', [])
         this.activeGame = false;
       } else {
         //Next piece
-        this.randomPiece();
+        this.nextPiece();
         this.resetAnchor();
         this.nextTick = setTimeout(this.tick.bind(this), this.interval);
       }
@@ -234,6 +271,13 @@ angular.module('tetris.services', [])
 
   };
 
+<<<<<<< f01a1ef296ce87f4fc0e75deef36b707f6cfcbe8
+=======
+  this.cancelTick = function() {
+    clearTimeout(this.nextTick);
+  };
+  
+>>>>>>> Implement piece queue
 })
 
 .service('Scores', function($http) {
@@ -250,6 +294,7 @@ angular.module('tetris.services', [])
       return response.data;
     });
   };
+<<<<<<< f01a1ef296ce87f4fc0e75deef36b707f6cfcbe8
 
   this.submitScore = function(data) {
     return $http({
@@ -267,6 +312,8 @@ angular.module('tetris.services', [])
       return response.data;
     });
   };
+=======
+>>>>>>> Implement piece queue
 
 
 });

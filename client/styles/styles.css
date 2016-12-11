@@ -88,6 +88,7 @@ th {
 
 /******************* GAME ******************************/
 
+/* Main blocks */
 .row{
   margin:0;
   height: 40px;
@@ -127,6 +128,47 @@ th {
   border: 2px solid black;
 }
 
+
+/* Queue blocks */
+.mini-row{
+  margin:0;
+  height: 10px;
+}
+
+.mini-block {
+  display: inline-block;
+  width: 10px;
+  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, .4);
+}
+
+.mini-r {
+  background-color: red;
+  border: 1px solid black;
+}
+
+.mini-y {
+  background-color: yellow;
+  border: 1px solid black;
+}
+
+.mini-b {
+  background-color: blue;
+  border: 1px solid black;
+}
+
+.mini-g {
+  background-color: lightgreen;
+  border: 1px solid black;
+}
+
+.mini-o { 
+  background-color: orange;
+  border: 1px solid black;
+}
+
 /* Info bars */
 #score {
   border: 6px solid black;
@@ -148,8 +190,7 @@ th {
   position: absolute;
   left: 7%;
   top: 34%;
-}
-
+  
 /*********** START AND GAMEOVER *****************/
 
 .nameEntry {

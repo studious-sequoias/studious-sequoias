@@ -21,8 +21,9 @@ angular.module('tetris.game', [])
     });
   };
 
-  logic.renderCB = function(matrix) {
+  logic.renderCB = function(matrix, queue) {
     $scope.matrix = matrix;
+    $scope.queue = queue;
     if (!$scope.skip) {
       $scope.$apply();
     } else {
