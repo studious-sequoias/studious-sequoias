@@ -4,6 +4,8 @@ angular.module('tetris.game', [])
 .controller('GameController', function($scope, logic) {
   $scope.matrix = logic.rendered;
 
+  $scope.data = logic.data;
+
   $scope.skip = true;
 
   logic.renderCB = function(matrix) {
@@ -17,35 +19,23 @@ angular.module('tetris.game', [])
 
   //Start:
   if (!logic.activeGame) {
-    logic.anchor = logic.start();
-    logic.clearField();
-    logic.randomPiece();
-    logic.tick(logic.piece, logic.anchor, logic.field, 500);
-    logic.activeGame = true;
-    // logic.renderField();
+    logic.start();
   } else {
     logic.renderField(logic.piece, logic.anchor, logic.field);
   }
-
-
-  // var color = function(spot) {
-  //   console.log(spot);
-  //   return spot === 1 ? 'red' : 'blue';
-  // };
-
+  
 })
 .controller('ClickController', function($scope, logic) {
 
   $scope.onKeydown = function(keycode) {
     if (keycode === 37) { //LEFT
-      console.log('left');
+      logic.moveLeft();
     } else if (keycode === 38) { //UP
-      console.log('up');
       logic.rotatePiece();
     } else if (keycode === 39) { //RIGHT
-      console.log('right');
+      logic.moveRight();
     } else if (keycode === 40) { //DOWN
-      console.log('down');
+      logic.moveDown();
     }
   };
 
