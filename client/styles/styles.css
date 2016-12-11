@@ -1,13 +1,20 @@
-
-/*************** NAV BAR *********************/
-.center {
-  margin: auto;
-  width: 60%;
+body {
+  background-color: #333333;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /*opacity: .2; end-game */
 }
 
+#custom {
+  margin: 0;
+  padding: 0;
+}
+
+/*************** NAV BAR *********************/
 nav {
-  width: 230px;
-  padding: 10px;
+  padding: 14px;
+  display: inline-block;
 }
 
 ul {
@@ -15,13 +22,13 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    
+    border: 12px solid black;
 }
 
 li {
     float: left;
-    border-right:1px solid #bbb;
-    background-color: #333;
+    border-right:2px solid #bbb;
+    background-color: #CE040B;
 }
 
 li:last-child {
@@ -29,22 +36,29 @@ li:last-child {
 }
 
 li a {
-    display: block;
+    /*display: block;*/
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 28px 36px;
     text-decoration: none;
+    font-size: 24pt;
 }
 
 li a:hover {
-    background-color: #4CAF50;
+    background-color: black;
 }
 
 h1 {
   margin: auto;
   font-family: 'Bungee', cursive; 
-  font-size: 50px;
+  font-size: 100px;
 }
+
+a {
+  font-family: 'Bungee', cursive;
+  color: 'blue'; 
+}
+
 /*********** HIGH SCORES TABLE *****************/
 
 table, th, td {
@@ -52,7 +66,7 @@ table, th, td {
 }
 
 tr:hover {
-  background-color: #f5f5f5
+  background-color: black;
 }
 
 th, td {
@@ -71,45 +85,47 @@ th {
   color: white;
 }
 
-/*************************************************/
+
+/******************* GAME ******************************/
 
 .row{
   margin:0;
-  height: 20px;
+  height: 40px;
 }
 
 .block {
   display: inline-block;
-  width: 20px;
+  width: 40px;
   height: 100%;
-  background-color: lightgray ;
   position: relative;
   box-sizing: border-box;
+  background: rgba(0, 0, 0, .4);
+  }
 }
 
 .block-r {
   background-color: red;
-  border: 1px solid gray;
+  border: 2px solid black;
 }
 
 .block-y {
   background-color: yellow;
-  border: 1px solid gray;
+  border: 2px solid black;
 }
 
 .block-b {
   background-color: blue;
-  border: 1px solid gray;
+  border: 2px solid grey;
 }
 
 .block-g {
   background-color: lightgreen;
-  border: 1px solid gray;
+  border: 2px solid black;
 }
 
 .block-o { 
   background-color: orange;
-  border: 1px solid gray;
+  border: 2px solid black;
 }
 
 /*span {
