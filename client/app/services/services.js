@@ -80,7 +80,7 @@ angular.module('tetris.services', [])
     this.resetAnchor(); 
     this.resetField();
     this.randomPiece();
-    this.interval = 800;
+    this.interval = 400;
     this.tick();
     this.activeGame = true;
   };
