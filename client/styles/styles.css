@@ -128,6 +128,17 @@ th {
   border: 2px solid black;
 }
 
+.block-ghost {
+  background: rgba(50, 50, 50, .4);
+  border: 2px solid black;
+}
+
+.inner-ghost {
+  height: 50%;
+  width: 50%;
+  margin: auto;
+  
+}
 
 /* Queue blocks */
 .mini-row{
@@ -170,7 +181,7 @@ th {
 }
 
 .mini-hold {
-  background-color: gray;
+  background: rgba(30, 30, 30, .4);
 }
 
 /* Info bars */

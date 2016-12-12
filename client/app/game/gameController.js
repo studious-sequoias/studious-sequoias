@@ -35,7 +35,7 @@ angular.module('tetris.game', [])
   if (!logic.activeGame) {
     logic.start();
   } else {
-    logic.renderField(logic.piece, logic.anchor, logic.field);
+    logic.renderField();
   }
 
 })
@@ -51,9 +51,10 @@ angular.module('tetris.game', [])
       logic.moveDown();
     } else if (keycode === 16) { //SHIFT
       logic.swapPiece();
-      console.log('swap');
     } else if (keycode === 32) { //SPACE
       logic.dropPiece();
+    } else if (keycode === 71) { //'g'
+      logic.ghostEnabled = !logic.ghostEnabled;
     }
   };
 
