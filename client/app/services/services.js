@@ -97,7 +97,8 @@ angular.module('tetris.services', [])
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
     this.nextPiece();
-    this.tick();
+    this.renderField();
+    setTimeout(this.tick.bind(this), this.interval);
     this.activeGame = true;
   };
 
@@ -302,7 +303,6 @@ angular.module('tetris.services', [])
   };
 
   this.tick = function() {
-    this.renderField();
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[Y]++;
     if (this.checkVerticalConflicts(this.piece(), proposedAnchor, this.field)) {
@@ -331,6 +331,7 @@ angular.module('tetris.services', [])
       this.nextTick = setTimeout(this.tick.bind(this), this.interval);
     }
 
+    this.renderField();
   };
 
   this.cancelTick = function() {
