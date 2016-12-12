@@ -2,12 +2,16 @@
 angular.module('tetris.services', [])
 
 .service('logic', function() {
+  ///////////////////
+  //Configuration
+  ///////////////////
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  this.field = [];
-  for (var i = 0; i < 13; i++) {
-    this.field.push(this.row.slice());
-  }
-  this.rendered = this.field;
+  this.boardHeight = 13;
+  this.interval = 400;
+  this.intervalChangeOnLevelUp = 50;
+  this.rowsPerLevel = 10;
+  this.ghostEnabled = true;
+  this.minInterval = 50;
 
   var X = 0;
   var Y = 1;
@@ -29,7 +33,7 @@ angular.module('tetris.services', [])
   var reversedL3 = [[0, 0], [1, 0], [0, 1], [0, 2]];
   var reversedL4 = [[-1, 1], [0, 1], [1, 1], [1, 2]];
   var reversedL = [reversedL1, reversedL2, reversedL3, reversedL4];
-  
+
   var line1 = [[-1, 0], [0, 0], [1, 0], [2, 0]];
   var line2 = [[0, -1], [0, 0], [0, 1], [0, 2]];
   var line3 = [[-2, 0], [-1, 0], [0, 0], [1, 0]];
@@ -56,27 +60,129 @@ angular.module('tetris.services', [])
   this.pieces = [square, normalL, reversedL, line, tee, normalZ, reversedZ];
   this.colors = ['r', 'y', 'y', 'b', 'o', 'g', 'g'];
   this.currentPiece = {piece: 0, rotate: 0};
-  this.piece = this.pieces[0][0];
-  this.pieceColor = 'g';
 
+  this.activeGame = false;
+  this.data = {
+    score: 0,
+    level: 1,
+    rowsCleared: 0
+  };
+
+  //Sets this.field to an empty field
+  this.resetField = function() {
+    this.field = [];
+    for (var i = 0; i < this.boardHeight; i++) {
+      this.field.push(this.row.slice());
+    }
+    this.rendered = this.field;
+  };
+
+  this.resetAnchor = function() {
+    this.anchor = [Math.floor((this.row.length - 1) / 2), 0];
+  };
+
+  this.piece = function(piece) {
+    piece = piece || this.currentPiece;
+    return this.pieces[piece.piece][piece.rotate];
+  };
+
+  this.pieceColor = function(piece) {
+    piece = piece || this.currentPiece;
+    return this.colors[piece.piece];
+  };
+  
+  //Begin game
   this.start = function() {
-    return [4, 0];
+    this.resetAnchor();
+    this.resetField();
+    this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
+    this.nextPiece();
+    this.tick();
+    this.activeGame = true;
   };
 
   this.randomPiece = function() {
-    this.currentPiece.piece = Math.floor(Math.random() * this.pieces.length);
-    this.currentPiece.rotate = 0;
-    this.piece = this.pieces[this.currentPiece.piece][0];
-    this.pieceColor = this.colors[this.currentPiece.piece];
+    var piece = {};
+    piece.piece = Math.floor(Math.random() * this.pieces.length);
+    piece.rotate = 0;
+    return piece;
+  };
+
+  this.nextPiece = function() {
+    this.currentPiece = this.pieceQueue.shift();
+    this.pieceQueue.push(this.randomPiece());
+    this.holdLock = false;
+  };
+
+  this.moveLeft = function() {
+    var proposedAnchor = this.anchor.slice();
+    proposedAnchor[X]--;
+    if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
+      this.anchor = proposedAnchor;
+      this.renderField();
+    }
+  };
+
+  this.moveRight = function() {
+    var proposedAnchor = this.anchor.slice();
+    proposedAnchor[X]++;
+    if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
+      this.anchor = proposedAnchor;
+      this.renderField();
+    }
+  };
+
+  this.moveDown = function() {
+    this.cancelTick();
+    this.tick();
+  };
+
+  this.dropPiece = function() {
+    this.cancelTick();
+    this.findBottom();
+    this.bottom.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
+    this.resetAnchor();
+    this.nextPiece();
+    this.clearRows();
+    this.renderField();
+    this.tick();
   };
 
   this.rotatePiece = function() {
+    var nextPiece = {piece: this.currentPiece.piece};
     if (this.currentPiece.rotate < this.pieces[this.currentPiece.piece].length - 1) {
-      this.currentPiece.rotate++;
+      nextPiece.rotate = this.currentPiece.rotate + 1;
     } else {
-      this.currentPiece.rotate = 0;
+      nextPiece.rotate = 0;
     }
-    this.piece = this.pieces[this.currentPiece.piece][this.currentPiece.rotate];
+    nextPieceDef = this.pieces[nextPiece.piece][nextPiece.rotate];
+
+    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
+      return;
+    }
+    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
+      return;
+    }
+    this.currentPiece = nextPiece;
+    this.renderField();
+  };
+
+  this.swapPiece = function() {
+    if (!this.holdLock) {
+      this.cancelTick();
+      if (this.holdPiece) {
+        var temp = this.holdPiece;
+        this.holdPiece = this.currentPiece;
+        this.currentPiece = temp;
+      } else {
+        this.holdPiece = this.currentPiece;
+        this.nextPiece();
+      }
+      this.tick();
+      this.resetAnchor();
+      this.renderField();
+      this.holdLock = true;
+    }
   };
 
   this.setValAtCoords = function(matrix, x, y, val) {
@@ -91,60 +197,145 @@ angular.module('tetris.services', [])
     return piece.map(coord => [anchor[X] + coord[X], anchor[Y] + coord[Y]]);
   };
 
-  this.renderField = function(piece, anchor, field) {
+  this.renderField = function() {
+    this.findBottom();
     //Create a copy of the field with only static pieces on the bottom
-    var renderedField = JSON.parse(JSON.stringify(field));
+    var renderedField = JSON.parse(JSON.stringify(this.field));
+
+    if (this.ghostEnabled) {
+      //Place the ghost piece on the field
+      this.bottom.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], 'ghost'));
+    }
+
     //Get the coordinates of the active piece
-    var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
+    var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
     //Place the active piece on the field
-    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor));
+    mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor()));
     
-    this.renderCB(renderedField);
+    this.renderCB(renderedField, this.renderQueue());
   };
 
-  this.checkVerticalConflicts = function(piece, anchor, field) {
-    var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
-    //If any element of the piece is currently on the bottom row, 
-    if (mappedPiece.some(coord => coord[Y] === field.length - 1)) {
+  this.renderQueue = function() {
+    var row = [0, 0, 0, 0, 0];
+    var holdRow = ['hold', 'hold', 'hold', 'hold', 'hold'];
+    var queue = [holdRow.slice(), holdRow.slice(), holdRow.slice(), holdRow.slice(), holdRow.slice(), row.slice()];
+    for (var i = 0; i < 4 * this.pieceQueue.length; i++) {
+      queue.push(row.slice());
+    }
+    var pieces = [this.holdPiece].concat(this.pieceQueue);
+    pieces.forEach(function(piece, i) {
+      var mappedPiece = this.mapPieceToAnchor(piece ? this.piece(piece) : [], [2, 4 * i + 2]);
+      var color = this.pieceColor(piece);
+      mappedPiece.forEach( coord => this.setValAtCoords(queue, coord[X], coord[Y], color));
+    }.bind(this));
+    return queue;
+  };
+
+  this.checkVerticalConflicts = function(piece, anchor) {
+    var mappedPiece = this.mapPieceToAnchor(piece, anchor);
+    //If any element of the piece is out of bounds, 
+    if (mappedPiece.some(coord => coord[Y] >= this.boardHeight)) {
       //The piece has bottomed out
       return true;
     }
 
     //If any element of the piece is going to touch a static block
-    if (mappedPiece.some(coord => this.getValAtCoords(field, coord[X], coord[Y] + 1))) {
+    if (mappedPiece.some(coord => this.getValAtCoords(this.field, coord[X], coord[Y]))) {
       //The piece has landed
       return true;
     }
     return false;
   };
 
-  this.tick = function(piece, anchor, field, interval) {
-    this.renderField(this.piece, anchor, field);
-    if (this.checkVerticalConflicts(this.piece, anchor, field)) {
+
+  this.checkHorizontalConflicts = function(piece, anchor) {
+    var mappedPiece = this.mapPieceToAnchor(piece, anchor);
+    if (mappedPiece.some(coord => coord[X] < 0 || coord[X] >= this.row.length)) {
+      return true;
+    }
+
+    //If any element of the piece is going to touch a static block
+    var mappedPiece = this.mapPieceToAnchor(piece, anchor);
+    if (mappedPiece.some(coord => this.getValAtCoords(this.field, coord[X], coord[Y]))) {
+      //The piece has landed
+      return true;
+    }
+    return false;
+  };
+
+  this.findBottom = function() {
+    var proposedAnchor = this.anchor.slice();
+    var piece = this.piece();
+    do {
+      proposedAnchor[Y]++;
+    }
+    while (!this.checkVerticalConflicts(piece, proposedAnchor));
+    proposedAnchor[Y]--;
+    this.bottom = this.mapPieceToAnchor(piece, proposedAnchor);
+  };
+
+  this.clearRows = function() {
+    var cleared = 0;
+    this.field.forEach(function(row, j) {
+      if (row.every(cell => cell ? true : false)) {
+        this.field.splice(j, 1);
+        this.field.unshift(this.row.slice());
+        cleared++;
+      }
+    }.bind(this));
+
+    //Score 100pts per row;
+    this.data.score += 100 * cleared;
+    if (cleared === 4) {
+      this.data.score += 400;
+    }
+
+    //Level up every ten rows (increase speed)
+    this.data.rowsCleared += cleared;
+    if (this.data.rowsCleared >= this.data.level * this.rowsPerLevel) {
+      this.data.level ++;
+      console.log('Level up:', this.data.level);
+      if (this.interval - this.intervalChangeOnLevelUp >= this.minInterval) {
+        this.interval -= this.intervalChangeOnLevelUp;
+      }
+    }
+  };
+
+  this.tick = function() {
+    this.renderField();
+    var proposedAnchor = this.anchor.slice();
+    proposedAnchor[Y]++;
+    if (this.checkVerticalConflicts(this.piece(), proposedAnchor, this.field)) {
       //Current piece is dead
       //Make piece a part of field at its current position
-      var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
-      mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
-      //TODO:  Clear rows if filled
+      var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
+      mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
+      
+      this.clearRows();
 
       //If any cell in the top row is filled:
-      if (field[0].some( col => col ? true : false)) {
+      if (this.field[0].some( col => col ? true : false)) {
         //Game over
         console.log('Game Over');
+        this.activeGame = false;
+        this.endGameCB(this.data.score);
       } else {
         //Next piece
-        this.randomPiece();
-        this.anchor = this.start();
-        setTimeout(this.tick.bind(this, this.piece, this.anchor, field, interval), interval);
+        this.nextPiece();
+        this.resetAnchor();
+        this.nextTick = setTimeout(this.tick.bind(this), this.interval);
       }
     } else {
       //Move anchor down a row
-      this.anchor[Y]++;
-      setTimeout(this.tick.bind(this, this.piece, anchor, field, interval), interval);
+      this.anchor = proposedAnchor;
+      this.nextTick = setTimeout(this.tick.bind(this), this.interval);
     }
 
   };
-  
+
+  this.cancelTick = function() {
+    clearTimeout(this.nextTick);
+  };
 })
 
 .service('Scores', function($http) {
@@ -159,37 +350,22 @@ angular.module('tetris.services', [])
     }).then(function (response) {
       return response.data;
     });
-  }
+  };
 
-
+  this.submitScore = function(data) {
+    return $http({
+      method: 'POST',
+      url: '/api/users',
+      data: {
+        name: data.name,
+        score: data.score //score to be configured still ******TODO******
+      },
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+    .then(function(response) {
+      return response.data;
+    });
+  };
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

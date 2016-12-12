@@ -4,7 +4,11 @@ var backEndController = require('./backend-controller.js');
 var bodyParser        = require('body-parser');
 var app               = express();
 
+
 mongoose.Promise = global.Promise;
+
+require('dotenv').load();
+
 mongoose.connect('mongodb://localhost:27017/tetris');
 
 // Connect to database
@@ -15,7 +19,7 @@ db.once('open', function() {
 });
 
 //get static html page
-app.use(express.static(__dirname + '/../client'))
+app.use(express.static(__dirname + '/../client'));
 
 // just for the request body data
 app.use(bodyParser.json());
@@ -23,6 +27,7 @@ app.use(bodyParser.json());
 app.get('/api/users', backEndController.listUsers);
 app.post('/api/users', backEndController.createUser);
 
-app.listen(3000, function() {
-	console.log("Yay, Node server is listening!")
-})
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log('Yay, Node server is listening!');
+});

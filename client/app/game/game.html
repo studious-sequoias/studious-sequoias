@@ -1,6 +1,26 @@
-<div class="container">
+<div id="score">
+	Score: {{data.score}}<br>
+	<div style="text-align:left">Level: {{data.level}}</div>
+</div> <br>
+
+<div id="next">
+	Next Piece:
+</div>
+
+
+<div class="container-fluid container">
   <div class="row" ng-repeat="row in matrix">
       <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>
+<div class="mini-row" ng-repeat="row in queue">
+    <span ng-repeat="spot in row track by $index" class="mini-block mini-{{spot}}"></span>
+</div>
+  <nav>
+    <ul id="custom" remove-on-click ng-click="startGame()">
+      <li><a>START</a></li>
+    </ul>
+    <div add-elem>
+    </div>
+  </nav>
 </div>
 <!-- <pre>{{matrix}}</pre> -->
