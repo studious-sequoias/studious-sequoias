@@ -14,13 +14,14 @@
   </head>
 
   <center>
+  <div class="container">
     <body ng-app="tetris" ng-controller='ClickController' on-Keydown='onKeydown'>
 
-      <figure id="custom" class="custom bungee regular-efbb43 background-333333 inline-eae2b1 shade-c9060e outline-3e0e00 sign-111111 horizontal" style="font-size: 130px;">
+      <figure id="custom" class="custom bungee regular-efbb43 background-253a5b inline-eae2b1 shade-c9060e outline-3e0e00 sign-111111 horizontal" style="font-size: 130px;">
       Tetr.js
       </figure><br>
     
-      <nav>
+      <nav class="item-a">
         <ul>
           <li><a href="#/game">GAME</a></li>
           <li><a href="#/scores">HIGH SCORES</a></li>
@@ -29,6 +30,7 @@
 
       <!-- VIEW -->
       <div ng-view></div>
+    </div>
   </center>
 
       <!-- ANGULAR -->
