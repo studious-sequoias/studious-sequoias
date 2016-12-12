@@ -15,7 +15,7 @@
       <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>
   <!-- DEMO OVERLAY -->
-  <div class="overlay" ng-if="!data.active">
+  <div class="overlay" ng-if="!data.active && !data.ended">
     <div class="info button" ng-click="startGame()">START</div>
   </div>
   <!-- PAUSE OVERLAY -->
