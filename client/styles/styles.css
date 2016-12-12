@@ -87,12 +87,22 @@ a {
   /*width: 35%;*/
   position: relative;
   background-color: #e62e00;
-  top: 250px;
 }
+
 .button:hover {
   background-color: #8585ad;
   cursor: pointer;
 }
+
+.overlay > .vertical-center > .button.info {
+  top: 500px;
+}
+
+/*.overlay input {
+  z-index: 10;
+  position: relative;
+  top:300px;
+}*/
 /*********** HIGH SCORES TABLE *****************/
 
 .tbody {

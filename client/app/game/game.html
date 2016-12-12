@@ -30,11 +30,11 @@
         <p>GAME OVER!</p>
         <p>Score: {{data.score}}</p>
         <p>Level: {{data.level}}</p>
+        <form ng-submit="submitScore(name)">
+          <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
+          <button class="info button">SUBMIT</button>
+        </form>
       </div>
-      <form ng-submit="submitScore(name)">
-        <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
-        <button class="info button">SUBMIT</button>
-      </form>
       <div class="info button" ng-click="startGame()">REPLAY</div>
     </div>
   </div>
