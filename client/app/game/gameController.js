@@ -11,6 +11,10 @@ angular.module('tetris.game', [])
     logic.start();
   };
 
+  $scope.togglePause = function() {
+    logic.togglePause();
+  };
+
   logic.endGameCB = function(score) {
     $scope.endGame(score);
   };
@@ -61,6 +65,10 @@ angular.module('tetris.game', [])
         logic.dropPiece();
       } else if (keycode === 71) { //'g'
         logic.ghostEnabled = !logic.ghostEnabled;
+      } else if (keycode === 13) { //enter
+        logic.togglePause();
+      } else if (keycode === 27) { //escape
+        logic.togglePause();
       }
     }
   };
