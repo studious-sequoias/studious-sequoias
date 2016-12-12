@@ -24,10 +24,12 @@ angular.module('tetris.game', [])
   };
 
   $scope.submitScore = function() {
-    Scores.submitScore({name: $scope.name || 'Casey', score: $scope.data.score})
-    .then(function(response) {
-      console.log(response);
-    });
+    if ($scope.name) {
+      Scores.submitScore({name: $scope.name, score: $scope.data.score})
+      .then(function(response) {
+        console.log(response);
+      });
+    }
   };
 
   logic.renderCB = function(matrix, queue) {
