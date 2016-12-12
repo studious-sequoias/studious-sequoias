@@ -28,7 +28,7 @@ angular.module('tetris.services', [])
   var reversedL3 = [[0, 0], [1, 0], [0, 1], [0, 2]];
   var reversedL4 = [[-1, 1], [0, 1], [1, 1], [1, 2]];
   var reversedL = [reversedL1, reversedL2, reversedL3, reversedL4];
-  
+
   var line1 = [[-1, 0], [0, 0], [1, 0], [2, 0]];
   var line2 = [[0, -1], [0, 0], [0, 1], [0, 2]];
   var line3 = [[-2, 0], [-1, 0], [0, 0], [1, 0]];
@@ -77,7 +77,7 @@ angular.module('tetris.services', [])
 
   //Begin game
   this.start = function() {
-    this.resetAnchor(); 
+    this.resetAnchor();
     this.resetField();
     this.randomPiece();
     this.interval = 400;
@@ -160,7 +160,7 @@ angular.module('tetris.services', [])
 
   this.checkVerticalConflicts = function(piece, anchor) {
     var mappedPiece = this.mapPieceToAnchor(this.piece, anchor);
-    //If any element of the piece is out of bounds, 
+    //If any element of the piece is out of bounds,
     if (mappedPiece.some(coord => coord[Y] >= this.boardHeight)) {
       //The piece has bottomed out
       return true;
@@ -199,7 +199,7 @@ angular.module('tetris.services', [])
       //Make piece a part of field at its current position
       var mappedPiece = this.mapPieceToAnchor(this.piece, this.anchor);
       mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor));
-      
+
       //Clear completed rows
       var score = 0;
       this.field.forEach(function(row, j) {
@@ -233,7 +233,7 @@ angular.module('tetris.services', [])
     }
 
   };
-  
+
 })
 
 .service('Scores', function($http) {
@@ -249,7 +249,24 @@ angular.module('tetris.services', [])
       console.log('response', response.data);
       return response.data;
     });
-  }
+  };
+
+  this.submitScore = function(data) {
+    return $http({
+      method: 'POST',
+      url: '/api/users',
+      data: {
+        name: data.name,
+        score: data.score //score to be configured still ******TODO******
+      },
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+    .then(function(response) {
+      return response.data;
+    });
+  };
 
 
 });
