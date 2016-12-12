@@ -24,13 +24,13 @@
   </div>
   <!-- GAME OVER OVERLAY -->
   <div class="overlay game-over" ng-if="data.ended">
-    <div class="vertical-center" ng-init="focusOnInput()">
+    <div class="vertical-center">
       <div class="info">
         <p>GAME OVER!</p>
         <p>Score: {{data.score}}</p>
         <p>Level: {{data.level}}</p>
         <form ng-submit="submitScore(name)" ng-if="data.score > 0">
-          <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
+          <input class="nameInput" type="text" ng-model="name" ng-init="focusOnInput()">
           <button class="info button">SUBMIT</button>
         </form>
       </div>
@@ -38,4 +38,3 @@
     </div>
   </div>
 </div>
-<pre>{{name}}</pre>

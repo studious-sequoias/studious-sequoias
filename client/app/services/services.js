@@ -93,7 +93,7 @@ angular.module('tetris.services', [])
     piece = piece || this.currentPiece;
     return this.colors[piece.piece];
   };
-  
+
   //Begin game
   this.start = function(demo) {
     if (this.nextTick) {
@@ -238,7 +238,7 @@ angular.module('tetris.services', [])
     var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
     //Place the active piece on the field
     mappedPiece.forEach(coord => this.setValAtCoords(renderedField, coord[X], coord[Y], this.pieceColor()));
-    
+
     this.renderCB(renderedField, this.renderQueue());
   };
 
@@ -260,7 +260,7 @@ angular.module('tetris.services', [])
 
   this.checkVerticalConflicts = function(piece, anchor) {
     var mappedPiece = this.mapPieceToAnchor(piece, anchor);
-    //If any element of the piece is out of bounds, 
+    //If any element of the piece is out of bounds,
     if (mappedPiece.some(coord => coord[Y] < 0 || coord[Y] >= this.boardHeight)) {
       //Conflict
       return true;
@@ -344,7 +344,7 @@ angular.module('tetris.services', [])
       //Make piece a part of field at its current position
       var mappedPiece = this.mapPieceToAnchor(this.piece(), this.anchor);
       mappedPiece.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
-      
+
       this.clearRows();
 
       //If any cell in the top row is filled:
@@ -405,5 +405,16 @@ angular.module('tetris.services', [])
     .then(function(response) {
       return response.data;
     });
+  };
+})
+.service('Storage', function() {
+  this.user = null;
+  this.currentUser = function(username) {
+    if (username) {
+      this.user = username;
+      return this.user;
+    } else {
+      return this.user;
+    }
   };
 });
