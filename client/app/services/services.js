@@ -318,6 +318,7 @@ angular.module('tetris.services', [])
         //Game over
         console.log('Game Over');
         this.activeGame = false;
+        this.endGameCB(this.data.score);
       } else {
         //Next piece
         this.nextPiece();
@@ -369,33 +370,3 @@ angular.module('tetris.services', [])
     });
   };
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

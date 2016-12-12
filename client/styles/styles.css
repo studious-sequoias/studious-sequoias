@@ -210,38 +210,10 @@ th {
 /*********** START AND GAMEOVER *****************/
 
 .nameEntry {
+
 }
 
 input[type=text] {
   box-sizing: border-box;
   font-size: 12pt;
-
-
-/*span {
-  float: left;
-  width: 40px;
-  border: solid 1px;
-}
-
-.container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.row {
-  height: 50px;
-}
-
-/*.spot {
-  border: solid;
-}
-
-.blue {
-  background-color: blue;
-  text
-}
-
-.red {
-  background-color: red;
 }

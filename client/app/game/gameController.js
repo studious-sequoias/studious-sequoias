@@ -9,13 +9,22 @@ angular.module('tetris.game', [])
   $scope.skip = true;
 
   $scope.startGame = function() {
-    setTimeout(function() {
-      $scope.endGame(); // function to use to initiate game over
-    }, 1000);
+    // setTimeout(function() {
+    //   $scope.endGame(); // function to use to initiate game over
+    // }, 1000);
+    if (!logic.activeGame) {
+      logic.start();
+    } else {
+      logic.renderField();
+    }
+  };
+
+  logic.endGameCB = function(score) {
+    $scope.endGame(score);
   };
 
   $scope.submitScore = function() {
-    Scores.submitScore({name: $scope.name, score: $scope.score})
+    Scores.submitScore({name: $scope.name || 'Casey', score: $scope.data.score})
     .then(function(response) {
       console.log(response);
     });
@@ -30,13 +39,6 @@ angular.module('tetris.game', [])
       $scope.skip = false;
     }
   };
-
-  //Start:
-  if (!logic.activeGame) {
-    logic.start();
-  } else {
-    logic.renderField();
-  }
 
 })
 .controller('ClickController', function($scope, logic) {
