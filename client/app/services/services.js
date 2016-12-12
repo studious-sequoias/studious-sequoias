@@ -3,10 +3,15 @@ angular.module('tetris.services', [])
 
 .service('logic', function() {
   ///////////////////
-  //BOARD DEFINITIONS
+  //Configuration
   ///////////////////
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   this.boardHeight = 13;
+  this.interval = 400;
+  this.intervalChangeOnLevelUp = 50;
+  this.rowsPerLevel = 10;
+  this.ghostEnabled = true;
+  this.minInterval = 50;
 
   var X = 0;
   var Y = 1;
@@ -55,14 +60,13 @@ angular.module('tetris.services', [])
   this.pieces = [square, normalL, reversedL, line, tee, normalZ, reversedZ];
   this.colors = ['r', 'y', 'y', 'b', 'o', 'g', 'g'];
   this.currentPiece = {piece: 0, rotate: 0};
-  //this.piece = this.pieces[0][0];
-  //this.pieceColor = 'g';
 
   this.activeGame = false;
-  this.data = {};
-  this.data.score = 0;
-
-  this.ghostEnabled = true;
+  this.data = {
+    score: 0,
+    level: 1,
+    rowsCleared: 0
+  };
 
   //Sets this.field to an empty field
   this.resetField = function() {
@@ -93,7 +97,6 @@ angular.module('tetris.services', [])
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
     this.nextPiece();
-    this.interval = 400;
     this.tick();
     this.activeGame = true;
   };
@@ -109,7 +112,6 @@ angular.module('tetris.services', [])
     this.currentPiece = this.pieceQueue.shift();
     this.pieceQueue.push(this.randomPiece());
     this.holdLock = false;
-    // this.findBottom();
   };
 
   this.moveLeft = function() {
@@ -117,7 +119,6 @@ angular.module('tetris.services', [])
     proposedAnchor[X]--;
     if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
       this.anchor = proposedAnchor;
-      // this.findBottom();
       this.renderField();
     }
   };
@@ -127,7 +128,6 @@ angular.module('tetris.services', [])
     proposedAnchor[X]++;
     if (!this.checkHorizontalConflicts(this.piece(), proposedAnchor, this.field)) {
       this.anchor = proposedAnchor;
-      // this.findBottom();
       this.renderField();
     }
   };
@@ -150,7 +150,6 @@ angular.module('tetris.services', [])
 
   this.rotatePiece = function() {
     var nextPiece = {piece: this.currentPiece.piece};
-    // var nextPieceDef = [];
     if (this.currentPiece.rotate < this.pieces[this.currentPiece.piece].length - 1) {
       nextPiece.rotate = this.currentPiece.rotate + 1;
     } else {
@@ -165,8 +164,6 @@ angular.module('tetris.services', [])
       return;
     }
     this.currentPiece = nextPiece;
-    // this.piece = nextPieceDef;
-    // this.findBottom();
     this.renderField();
   };
 
@@ -183,7 +180,6 @@ angular.module('tetris.services', [])
       }
       this.tick();
       this.resetAnchor();
-      // this.findBottom();
       this.renderField();
       this.holdLock = true;
     }
@@ -279,19 +275,30 @@ angular.module('tetris.services', [])
   };
 
   this.clearRows = function() {
-    var score = 0;
+    var cleared = 0;
     this.field.forEach(function(row, j) {
       if (row.every(cell => cell ? true : false)) {
         this.field.splice(j, 1);
         this.field.unshift(this.row.slice());
-        score += 100;
-      }
-      //If one move clears four rows, that move scores double (800 pts);
-      if (score === 400) {
-        score *= 2;
+        cleared++;
       }
     }.bind(this));
-    this.data.score += score;
+
+    //Score 100pts per row;
+    this.data.score += 100 * cleared;
+    if (cleared === 4) {
+      this.data.score += 400;
+    }
+
+    //Level up every ten rows (increase speed)
+    this.data.rowsCleared += cleared;
+    if (this.data.rowsCleared >= this.data.level * this.rowsPerLevel) {
+      this.data.level ++;
+      console.log('Level up:', this.data.level);
+      if (this.interval - this.intervalChangeOnLevelUp >= this.minInterval) {
+        this.interval -= this.intervalChangeOnLevelUp;
+      }
+    }
   };
 
   this.tick = function() {
