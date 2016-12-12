@@ -73,10 +73,20 @@ a {
   color: 'blue';
 }
 
-.button {
+
+
+.overlay .info {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.button.info {
   display: inline-block;
   margin: 10px auto;
   /*width: 35%;*/
+  position: relative;
+  background-color: #e62e00;
 }
 
 .button:hover {
@@ -84,6 +94,15 @@ a {
   cursor: pointer;
 }
 
+.overlay > .vertical-center > .button.info {
+  top: 500px;
+}
+
+/*.overlay input {
+  z-index: 10;
+  position: relative;
+  top:300px;
+}*/
 /*********** HIGH SCORES TABLE *****************/
 
 

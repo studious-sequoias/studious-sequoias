@@ -1,9 +1,9 @@
-<div id="score" class="info">
+<div id="score" class="info" ng-if="data.active">
 	Score: {{data.score}}<br>
 	<div style="text-align:left">Level: {{data.level}}</div>
 </div> <br>
 
-<div id="next" class="info">
+<div id="next" class="info" ng-if="data.active">
 	Next Piece:
   <div class="mini-row" ng-repeat="row in queue">
       <span ng-repeat="spot in row track by $index" class="mini-block mini-{{spot}}"></span>
@@ -15,8 +15,12 @@
       <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>
   <!-- DEMO OVERLAY -->
-  <div class="overlay" ng-if="!data.active">
+  <div class="overlay" ng-if="!data.active && !data.ended">
     <div class="info button" ng-click="startGame()">START</div>
+  </div>
+  <!-- PAUSE OVERLAY -->
+  <div class="overlay" ng-if="data.paused">
+    <div class="info button" ng-click="togglePause()">RESUME</div>
   </div>
   <!-- GAME OVER OVERLAY -->
   <div class="overlay" ng-if="data.ended">
@@ -25,11 +29,11 @@
         <p>GAME OVER!</p>
         <p>Score: {{data.score}}</p>
         <p>Level: {{data.level}}</p>
+        <form ng-submit="submitScore(name)">
+          <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
+          <button class="info button">SUBMIT</button>
+        </form>
       </div>
-      <form ng-submit="submitScore(name)">
-        <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
-        <button class="info button">SUBMIT</button>
-      </form>
       <div class="info button" ng-click="startGame()">REPLAY</div>
     </div>
   </div>

@@ -67,6 +67,7 @@ angular.module('tetris.services', [])
     level: 1,
     rowsCleared: 0,
     active: false,
+    paused: false,
     ended: false
   };
 
@@ -98,6 +99,12 @@ angular.module('tetris.services', [])
     if (this.nextTick) {
       this.cancelTick();
     }
+
+    this.data.score = 0;
+    this.data.level = 1;
+    this.data.rowsCleared = 0;
+    this.holdPiece = null;
+
     this.resetAnchor();
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
@@ -108,6 +115,17 @@ angular.module('tetris.services', [])
       this.data.active = true;
     }
     this.data.ended = false;
+  };
+
+  this.togglePause = function() {
+    if (this.data.paused) {
+      this.scheduleTick();
+      this.data.paused = false;
+    } else {
+      this.cancelTick();
+      this.data.paused = true;
+    }
+    this.renderField();
   };
 
   this.randomPiece = function() {
