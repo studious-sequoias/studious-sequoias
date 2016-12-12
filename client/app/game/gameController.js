@@ -9,20 +9,32 @@ angular.module('tetris.game', [])
   $scope.skip = true;
 
   $scope.startGame = function() {
-    setTimeout(function() {
-      $scope.endGame(); // function to use to initiate game over
-    }, 1000);
+    // setTimeout(function() {
+    //   $scope.endGame(); // function to use to initiate game over
+    // }, 1000);
+    if (!logic.activeGame) {
+      logic.start();
+    } else {
+      logic.renderField();
+    }
+  };
+
+  logic.endGameCB = function(score) {
+    $scope.endGame(score);
   };
 
   $scope.submitScore = function() {
-    Scores.submitScore({name: $scope.name, score: $scope.score})
-    .then(function(response) {
-      console.log(response);
-    });
+    if ($scope.name) {
+      Scores.submitScore({name: $scope.name, score: $scope.data.score})
+      .then(function(response) {
+        console.log(response);
+      });
+    }
   };
 
-  logic.renderCB = function(matrix) {
+  logic.renderCB = function(matrix, queue) {
     $scope.matrix = matrix;
+    $scope.queue = queue;
     if (!$scope.skip) {
       $scope.$apply();
     } else {
@@ -30,24 +42,25 @@ angular.module('tetris.game', [])
     }
   };
 
-  //Start:
-  if (!logic.activeGame) {
-    logic.start();
-  } else {
-    logic.renderField(logic.piece, logic.anchor, logic.field);
-  }
-
 })
 .controller('ClickController', function($scope, logic) {
   $scope.onKeydown = function(keycode) {
-    if (keycode === 37) { //LEFT
-      logic.moveLeft();
-    } else if (keycode === 38) { //UP
-      logic.rotatePiece();
-    } else if (keycode === 39) { //RIGHT
-      logic.moveRight();
-    } else if (keycode === 40) { //DOWN
-      logic.moveDown();
+    if (logic.activeGame) {
+      if (keycode === 37) { //LEFT
+        logic.moveLeft();
+      } else if (keycode === 38) { //UP
+        logic.rotatePiece();
+      } else if (keycode === 39) { //RIGHT
+        logic.moveRight();
+      } else if (keycode === 40) { //DOWN
+        logic.moveDown();
+      } else if (keycode === 16) { //SHIFT
+        logic.swapPiece();
+      } else if (keycode === 32) { //SPACE
+        logic.dropPiece();
+      } else if (keycode === 71) { //'g'
+        logic.ghostEnabled = !logic.ghostEnabled;
+      }
     }
   };
 
