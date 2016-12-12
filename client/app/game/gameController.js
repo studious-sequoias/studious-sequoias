@@ -6,7 +6,6 @@ angular.module('tetris.game', [])
   $scope.name = '';
 
   $scope.skipFirstRender = true;
-
   $scope.startGame = function() {
     $scope.skipFirstRender = true;
     logic.start();
@@ -16,16 +15,18 @@ angular.module('tetris.game', [])
     $scope.endGame(score);
   };
 
-  $scope.submitScore = function() {
-    $scope.$apply();
-    console.log('name', $scope.name);
-    if ($scope.name) {
-      Scores.submitScore({name: $scope.name, score: $scope.data.score})
+  $scope.focusOnInput = function() {
+    angular.element('.nameInput').focus();
+  };
+
+  $scope.submitScore = function(name) {
+    if (name) {
+      Scores.submitScore({name: name, score: $scope.data.score})
       .then(function(response) {
         console.log(response);
       });
       $scope.data.ended = false;
-      $location.redirect('#/scores');
+      $location.path('/scores');
     } else {
       $scope.startGame();
     }

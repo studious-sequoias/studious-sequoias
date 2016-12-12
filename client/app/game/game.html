@@ -21,14 +21,16 @@
   </div>
   <!-- GAME OVER OVERLAY -->
   <div class="overlay" ng-if="data.ended">
-    <div class="vertical-center">
+    <div class="vertical-center" ng-init="focusOnInput()">
       <div class="info">
         <p>GAME OVER!</p>
         <p>Score: {{data.score}}</p>
         <p>Level: {{data.level}}</p>
       </div>
-      <!-- <input type="text" ng-model="name" placeholder="NAME"></div>
-      <div class="info button" ng-click="submitScore()">SUBMIT</div> -->
+      <form ng-submit="submitScore(name)">
+        <input class="nameInput" type="text" ng-model="name" placeholder="NAME">
+        <button class="info button">SUBMIT</button>
+      </form>
       <div class="info button" ng-click="startGame()">REPLAY</div>
     </div>
   </div>
