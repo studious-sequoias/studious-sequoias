@@ -7,7 +7,7 @@ angular.module('tetris.services', [])
   ///////////////////
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   this.boardHeight = 20;
-  this.interval = 400;
+  this.startInterval = 400;
   this.intervalChangeOnLevelUp = 50;
   this.rowsPerLevel = 10;
   this.ghostEnabled = true;
@@ -100,6 +100,7 @@ angular.module('tetris.services', [])
       this.cancelTick();
     }
 
+    this.interval = this.startInterval;
     this.data.score = 0;
     this.data.level = 1;
     this.data.rowsCleared = 0;
