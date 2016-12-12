@@ -13,14 +13,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://bungee-project.djr.com/resources/web/bungee.js"></script>
   </head>
-  
+
   <center>
-    <body ng-app="tetris" ng-controller='GameController' on-Keydown='onKeydown'>
+    <body ng-app="tetris" ng-controller='ClickController' on-Keydown='onKeydown'>
 
       <figure id="custom" class="custom bungee regular-efbb43 background-333333 inline-eae2b1 shade-c9060e outline-3e0e00 sign-111111 horizontal" style="font-size: 130px;">
       Tetr.js
       </figure><br>
-   
+    
       <nav>
         <ul>
           <li><a href="#/game">GAME</a></li>
@@ -30,6 +30,7 @@
 
       <!-- VIEW -->
       <div ng-view></div>
+  </center>
 
       <!-- ANGULAR -->
       <script src="lib/angular/angular.js"></script>
@@ -42,5 +43,5 @@
       <script src="app/services/services.js"></script>
       <script src="app/app.js"></script>
     </body>
-  </center>
+  
 </html>
