@@ -65,7 +65,9 @@ angular.module('tetris.services', [])
   this.data = {
     score: 0,
     level: 1,
-    rowsCleared: 0
+    rowsCleared: 0,
+    active: false,
+    ended: false
   };
 
   //Sets this.field to an empty field
@@ -92,13 +94,20 @@ angular.module('tetris.services', [])
   };
   
   //Begin game
-  this.start = function() {
+  this.start = function(demo) {
+    if (this.nextTick) {
+      this.cancelTick();
+    }
     this.resetAnchor();
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
     this.nextPiece();
     this.scheduleTick();
     this.activeGame = true;
+    if (!demo) {
+      this.data.active = true;
+    }
+    this.data.ended = false;
   };
 
   this.randomPiece = function() {
@@ -324,8 +333,15 @@ angular.module('tetris.services', [])
       if (this.field[0].some( col => col ? true : false)) {
         //Game over
         console.log('Game Over');
-        this.activeGame = false;
-        this.endGameCB(this.data.score);
+        if (this.data.active) {
+          this.activeGame = false;
+          this.data.active = false;
+          this.data.ended = true;
+          this.renderField();
+        } else {
+          this.start('demo');
+        }
+        //this.endGameCB(this.data.score);
       } else {
         //Next piece
         this.resetAnchor();
