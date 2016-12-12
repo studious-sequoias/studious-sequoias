@@ -1,14 +1,27 @@
 <div class="scores">
 
   <table>
+
     <tr>
-      <th>USER</th>
-      <th>SCORE</th>
+      <table cellspacing="0" cellpadding="1">
+        <th>RANK</th>
+        <th>USER</th>
+        <th>SCORE</th>
+      </table>
     </tr>
-    <tr ng-repeat="user in data.users">
-      <td>{{ user.name }}</td>
-      <td>{{ user.score }}</td>
+
+    <tr>
+      <div class="tbody">
+        <table cellspacing="0" cellpadding="1">
+          <tr ng-repeat="user in data.users | orderBy:'-score'">
+            <td>{{ $index + 1 }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.score }}</td>
+          </tr>
+        </table>
+      </div>
     </tr>
+
   </table>
 
 </div>

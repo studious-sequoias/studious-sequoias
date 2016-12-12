@@ -61,6 +61,11 @@ a {
 
 /*********** HIGH SCORES TABLE *****************/
 
+.tbody {
+  height: 390px;
+  overflow: scroll;
+}
+
 table, th, td {
   border-collapse: collapse;
 }
@@ -72,11 +77,14 @@ tr:hover {
 th, td {
   text-align: center;
   padding: 10px;
+  width: 100px;
   border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
 }
 
 table {
-  width: 300px;
+  width: 400px;
 }
 
 th {
@@ -85,6 +93,9 @@ th {
   color: white;
 }
 
+.rank {
+  width: 75px;
+}
 
 /******************* GAME ******************************/
 

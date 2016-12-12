@@ -348,7 +348,6 @@ angular.module('tetris.services', [])
         'Content-type': 'application/json'
       }
     }).then(function (response) {
-      console.log('response', response.data);
       return response.data;
     });
   };

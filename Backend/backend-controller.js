@@ -7,6 +7,8 @@ var User = mongoose.model("User", {
 	score: Number
 });
 
+module.exports.User = User;
+
 module.exports.listUsers = function(req, res) {
 	User.find({}, function(err, users) {
 		res.send(users)

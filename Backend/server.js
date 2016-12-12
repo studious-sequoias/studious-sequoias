@@ -4,6 +4,9 @@ var backEndController = require('./backend-controller.js');
 var bodyParser        = require('body-parser');
 var app               = express();
 
+
+mongoose.Promise = global.Promise;
+
 require('dotenv').load();
 
 mongoose.connect('mongodb://localhost:27017/tetris');
