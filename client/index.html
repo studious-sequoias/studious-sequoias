@@ -8,19 +8,21 @@
     <!-- STYLES -->
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" href="https://bungee-project.djr.com/resources/web/bungee.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://bungee-project.djr.com/resources/web/bungee.js"></script>
   </head>
 
   <center>
+  <div>
     <body ng-app="tetris" ng-controller='ClickController' on-Keydown='onKeydown'>
 
-      <figure id="custom" class="custom bungee regular-efbb43 background-333333 inline-eae2b1 shade-c9060e outline-3e0e00 sign-111111 horizontal" style="font-size: 130px;">
+      <figure id="custom" class="custom bungee regular-efbb43 background-253a5b inline-eae2b1 shade-c9060e outline-3e0e00 sign-111111 horizontal" style="font-size: 130px;">
       Tetr.js
       </figure><br>
     
-      <nav>
+      <nav class="item-a">
         <ul>
           <li><a href="#/game">GAME</a></li>
           <li><a href="#/scores">HIGH SCORES</a></li>
@@ -29,6 +31,7 @@
 
       <!-- VIEW -->
       <div ng-view></div>
+    </div>
   </center>
 
       <!-- ANGULAR -->

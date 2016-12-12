@@ -1,5 +1,5 @@
 body {
-  background-color: #333333;
+  background-color: #253a5b;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -9,6 +9,20 @@ body {
 #custom {
   margin: 90;
   padding: 0;
+}
+
+.container{
+  display: grid;
+  grid-template-columns: [first] 40px [line2] 50px [line3] auto [col4-start] 50px [five] 40px [end];
+  grid-template-rows: [row1-start] 25% [row1-end] 100px [third-line] auto [last-line];
+}
+
+.item-a{
+  display: grid;
+  grid-column-start: 2;
+  grid-column-end: five;
+  grid-row-start: row1-start
+  grid-row-end: 3
 }
 
 /*************** NAV BAR *********************/
@@ -28,7 +42,7 @@ ul {
 li {
   float: left;
   border-right:2px solid #bbb;
-  background-color: #8585ad;
+  background-color: #6a96ec;
 }
 
 li:last-child {
@@ -132,12 +146,12 @@ th {
 /* Main blocks */
 .row {
   margin:0;
-  height: 40px;
+  height: 34px;
 }
 
 .block {
   display: inline-block;
-  width: 40px;
+  width: 34px;
   height: 100%;
   position: relative;
   box-sizing: border-box;
@@ -234,17 +248,20 @@ th {
   color: black;
   background-color: #ffb31a;
 }
+
 #score {
   position: absolute;
-  left: 77%;
-  top: 35%;
+  left: 75%;
+  top: 28%;
 }
 
 #next {
   position: absolute;
   left: 7%;
-  top: 34%;
-  
+  top: 28%;
+}
+
+/*color selection: #C8C8C8 9999ff ffb31a orange:ff4000*/
 
 /*********** START AND GAMEOVER *****************/
 
