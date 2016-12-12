@@ -1,12 +1,25 @@
 // client/app/game/gameController.js
 angular.module('tetris.game', [])
 
-.controller('GameController', function($scope, logic) {
+.controller('GameController', function($scope, logic, Scores) {
   $scope.matrix = logic.rendered;
 
   $scope.data = logic.data;
 
   $scope.skip = true;
+
+  $scope.startGame = function() {
+    setTimeout(function() {
+      $scope.endGame(); // function to use to initiate game over
+    }, 1000);
+  };
+
+  $scope.submitScore = function() {
+    Scores.submitScore({name: $scope.name, score: $scope.score})
+    .then(function(response) {
+      console.log(response);
+    });
+  };
 
   logic.renderCB = function(matrix) {
     $scope.matrix = matrix;
@@ -23,7 +36,7 @@ angular.module('tetris.game', [])
   } else {
     logic.renderField(logic.piece, logic.anchor, logic.field);
   }
-  
+
 })
 .controller('ClickController', function($scope, logic) {
   $scope.onKeydown = function(keycode) {
@@ -49,6 +62,29 @@ mod.directive('onKeydown', function() {
       elem.on('keydown', function(e) {
         functionToCall(e.which);
       });
+    }
+  };
+});
+
+mod.directive('removeOnClick', function($rootScope) {
+  return {
+    link: function(scope, elem, attrs) {
+      elem.bind('click', function() {
+        elem.remove();
+      });
+    }
+  };
+});
+
+mod.directive('addElem', function($compile) {
+  return {
+    link: function(scope, elem, attrs) {
+      scope.endGame = function() {
+        var el = angular.element('<span/>');
+        el.append('<div remove-on-click><ul ng-click="submitScore()"><li><a href="#/">SUBMIT</a></li></ul></br><input id="nameEntry" type="text" ng-model="name"></div><script>document.getElementById("nameEntry").focus()</script>');
+        $compile(el)(scope);
+        elem.append(el);
+      };
     }
   };
 });

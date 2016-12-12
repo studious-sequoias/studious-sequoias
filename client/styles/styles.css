@@ -50,13 +50,13 @@ li a:hover {
 
 h1 {
   margin: auto;
-  font-family: 'Bungee', cursive; 
+  font-family: 'Bungee', cursive;
   font-size: 100px;
 }
 
 a {
   font-family: 'Bungee', cursive;
-  color: 'blue'; 
+  color: 'blue';
 }
 
 /*********** HIGH SCORES TABLE *****************/
@@ -100,8 +100,7 @@ th {
   position: relative;
   box-sizing: border-box;
   background: rgba(0, 0, 0, .4);
-  }
-
+}
 
 .block-r {
   background-color: red;
@@ -123,11 +122,12 @@ th {
   border: 2px solid black;
 }
 
-.block-o { 
+.block-o {
   background-color: orange;
   border: 2px solid black;
 }
 
+/* Info bars */
 #score {
   border: 6px solid black;
   font-size: 35px;
@@ -150,7 +150,15 @@ th {
   top: 34%;
 }
 
+/*********** START AND GAMEOVER *****************/
 
+.nameEntry {
+}
+
+input[type=text] {
+  box-sizing: border-box;
+  font-size: 12pt;
+}
 
 
 /*span {

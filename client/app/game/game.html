@@ -9,9 +9,16 @@
 </div>
 
 
-<div class="container-fluid">
+<div class="container-fluid container">
   <div class="row" ng-repeat="row in matrix">
       <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>
+  <nav>
+    <ul id="custom" remove-on-click ng-click="startGame()">
+      <li><a>START</a></li>
+    </ul>
+    <div add-elem>
+    </div>
+  </nav>
 </div>
 <!-- <pre>{{matrix}}</pre> -->
