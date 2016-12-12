@@ -98,6 +98,12 @@ angular.module('tetris.services', [])
     if (this.nextTick) {
       this.cancelTick();
     }
+
+    this.data.score = 0;
+    this.data.level = 1;
+    this.data.rowsCleared = 0;
+    this.holdPiece = null;
+
     this.resetAnchor();
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
