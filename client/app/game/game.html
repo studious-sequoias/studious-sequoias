@@ -1,9 +1,9 @@
-<div id="score" class="info" ng-if="data.active">
+<div id="score" class="info">
 	Score: {{data.score}}<br>
 	<div style="text-align:left">Level: {{data.level}}</div>
 </div> <br>
 
-<div id="next" class="info" ng-if="data.active">
+<div id="next" class="info">
 	Next Piece:
   <div class="mini-row" ng-repeat="row in queue">
       <span ng-repeat="spot in row track by $index" class="mini-block mini-{{spot}}"></span>

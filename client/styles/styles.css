@@ -146,12 +146,12 @@ th {
 /* Main blocks */
 .row {
   margin:0;
-  height: 40px;
+  height: 34px;
 }
 
 .block {
   display: inline-block;
-  width: 40px;
+  width: 34px;
   height: 100%;
   position: relative;
   box-sizing: border-box;
@@ -251,14 +251,14 @@ th {
 
 #score {
   position: absolute;
-  left: 77%;
-  top: 35%;
+  left: 75%;
+  top: 28%;
 }
 
 #next {
   position: absolute;
   left: 7%;
-  top: 34%;
+  top: 28%;
 }
 
 /*color selection: #C8C8C8 9999ff ffb31a orange:ff4000*/
