@@ -97,8 +97,7 @@ angular.module('tetris.services', [])
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
     this.nextPiece();
-    this.renderField();
-    setTimeout(this.tick.bind(this), this.interval);
+    this.scheduleTick();
     this.activeGame = true;
   };
 
@@ -113,6 +112,7 @@ angular.module('tetris.services', [])
     this.currentPiece = this.pieceQueue.shift();
     this.pieceQueue.push(this.randomPiece());
     this.holdLock = false;
+    this.renderField();
   };
 
   this.moveLeft = function() {
@@ -143,10 +143,9 @@ angular.module('tetris.services', [])
     this.findBottom();
     this.bottom.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
     this.resetAnchor();
-    this.nextPiece();
     this.clearRows();
-    this.renderField();
-    this.tick();
+    this.nextPiece();
+    this.scheduleTick();
   };
 
   this.rotatePiece = function() {
@@ -158,10 +157,10 @@ angular.module('tetris.services', [])
     }
     nextPieceDef = this.pieces[nextPiece.piece][nextPiece.rotate];
 
-    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
+    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
       return;
     }
-    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
+    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
       return;
     }
     this.currentPiece = nextPiece;
@@ -235,8 +234,8 @@ angular.module('tetris.services', [])
   this.checkVerticalConflicts = function(piece, anchor) {
     var mappedPiece = this.mapPieceToAnchor(piece, anchor);
     //If any element of the piece is out of bounds, 
-    if (mappedPiece.some(coord => coord[Y] >= this.boardHeight)) {
-      //The piece has bottomed out
+    if (mappedPiece.some(coord => coord[Y] < 0 || coord[Y] >= this.boardHeight)) {
+      //Conflict
       return true;
     }
 
@@ -302,6 +301,14 @@ angular.module('tetris.services', [])
     }
   };
 
+  this.scheduleTick = function() {
+    this.nextTick = setTimeout(this.tick.bind(this), this.interval);
+  };
+
+  this.cancelTick = function() {
+    clearTimeout(this.nextTick);
+  };
+
   this.tick = function() {
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[Y]++;
@@ -321,22 +328,18 @@ angular.module('tetris.services', [])
         this.endGameCB(this.data.score);
       } else {
         //Next piece
-        this.nextPiece();
         this.resetAnchor();
+        this.nextPiece();
         this.nextTick = setTimeout(this.tick.bind(this), this.interval);
       }
     } else {
       //Move anchor down a row
       this.anchor = proposedAnchor;
-      this.nextTick = setTimeout(this.tick.bind(this), this.interval);
+      this.scheduleTick();
+      this.renderField();
     }
-
-    this.renderField();
   };
 
-  this.cancelTick = function() {
-    clearTimeout(this.nextTick);
-  };
 })
 
 .service('Scores', function($http) {
