@@ -43,20 +43,22 @@ angular.module('tetris.game', [])
 })
 .controller('ClickController', function($scope, logic) {
   $scope.onKeydown = function(keycode) {
-    if (keycode === 37) { //LEFT
-      logic.moveLeft();
-    } else if (keycode === 38) { //UP
-      logic.rotatePiece();
-    } else if (keycode === 39) { //RIGHT
-      logic.moveRight();
-    } else if (keycode === 40) { //DOWN
-      logic.moveDown();
-    } else if (keycode === 16) { //SHIFT
-      logic.swapPiece();
-    } else if (keycode === 32) { //SPACE
-      logic.dropPiece();
-    } else if (keycode === 71) { //'g'
-      logic.ghostEnabled = !logic.ghostEnabled;
+    if (logic.activeGame) {
+      if (keycode === 37) { //LEFT
+        logic.moveLeft();
+      } else if (keycode === 38) { //UP
+        logic.rotatePiece();
+      } else if (keycode === 39) { //RIGHT
+        logic.moveRight();
+      } else if (keycode === 40) { //DOWN
+        logic.moveDown();
+      } else if (keycode === 16) { //SHIFT
+        logic.swapPiece();
+      } else if (keycode === 32) { //SPACE
+        logic.dropPiece();
+      } else if (keycode === 71) { //'g'
+        logic.ghostEnabled = !logic.ghostEnabled;
+      }
     }
   };
 
