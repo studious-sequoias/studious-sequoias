@@ -17,6 +17,9 @@ angular.module('tetris', [
       templateUrl: 'app/scores/scores.html',
       controller: 'ScoresController'
     })
+    .when('/help', {
+      templateUrl: 'app/help.html'
+    })
     .otherwise({
       redirectTo: '/game'
     });
