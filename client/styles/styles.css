@@ -48,7 +48,7 @@ h1 {
 /*********** HIGH SCORES TABLE *****************/
 
 .tbody {
-  height: 400px;
+  height: 390px;
   overflow: scroll;
 }
 
@@ -63,7 +63,7 @@ tr:hover {
 th, td {
   text-align: center;
   padding: 10px;
-  width: 180px;
+  width: 100px;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
@@ -77,6 +77,10 @@ th {
   height: 40px;
   background-color: #85144b;
   color: white;
+}
+
+.rank {
+  width: 75px;
 }
 
 /*************************************************/
