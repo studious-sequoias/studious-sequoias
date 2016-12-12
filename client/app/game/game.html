@@ -1,4 +1,15 @@
-<div class="container">
+<div id="score">
+	Score:
+	{{data.score}} <br>
+	<div style="text-align:left">Level:</div>
+</div> <br>
+
+<div id="next">
+	Next Piece:
+</div>
+
+
+<div class="container-fluid container">
   <div class="row" ng-repeat="row in matrix">
       <span ng-repeat="spot in row track by $index" class="block block-{{spot}}"></span>
   </div>

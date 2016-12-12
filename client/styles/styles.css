@@ -7,7 +7,7 @@ body {
 }
 
 #custom {
-  margin: 0;
+  margin: 90;
   padding: 0;
 }
 
@@ -22,13 +22,13 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: 12px solid black;
+    border: 6px solid black;
 }
 
 li {
     float: left;
     border-right:2px solid #bbb;
-    background-color: #CE040B;
+    background-color: #8585ad;
 }
 
 li:last-child {
@@ -37,7 +37,7 @@ li:last-child {
 
 li a {
     /*display: block;*/
-    color: white;
+    color: black;
     text-align: center;
     padding: 28px 36px;
     text-decoration: none;
@@ -45,7 +45,7 @@ li a {
 }
 
 li a:hover {
-    background-color: black;
+    background-color: #ffb31a;
 }
 
 h1 {
@@ -125,6 +125,29 @@ th {
 .block-o {
   background-color: orange;
   border: 2px solid black;
+}
+
+/* Info bars */
+#score {
+  border: 6px solid black;
+  font-size: 35px;
+  font-family: 'Bungee', cursive;
+  color: black;
+  background-color: #ffb31a;
+  position: absolute;
+  left: 77%;
+  top: 35%;
+}
+
+#next {
+  border: 6px solid black;
+  font-size: 35px;
+  font-family: 'Bungee', cursive;
+  color: black;
+  background-color: #ffb31a;
+  position: absolute;
+  left: 7%;
+  top: 34%;
 }
 
 /*********** START AND GAMEOVER *****************/

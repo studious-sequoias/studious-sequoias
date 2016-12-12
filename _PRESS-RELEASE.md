@@ -17,10 +17,10 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Tetris
+  > Tetr.js
 
 ## Sub-Heading ##
-  > People who like to fit shapes together for fun
+  > People who like to fit shapes together for fun.
 
 ## Summary ##
   > Shapes are falling from the ceiling!  If the room fills up, you will lose!  You can clear rows by filling them completely.  Don't get stuck.
@@ -32,13 +32,13 @@ Once the project moves into development, the press release can be used as a touc
   > Play this game.  You won't be bored.  You still won't have any friends, but you might be better at geometry.
 
 ## Quote from You ##
-  > "I like Tetris."  --dev team
+  > "I like....Tetris."  --dev team
 
 ## How to Get Started ##
   > Open our app and start playing!
 
 ## Customer Quote ##
-  > "Tetris destroyed my marriage.  I regret nothing."
+  > "Tetr.js destroyed my marriage.  I regret nothing."
 
 ## Closing and Call to Action ##
   > Win forever.  Become a boss at life.
