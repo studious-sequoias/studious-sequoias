@@ -6,7 +6,7 @@ angular.module('tetris.services', [])
   //Configuration
   ///////////////////
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  this.boardHeight = 13;
+  this.boardHeight = 20;
   this.interval = 400;
   this.intervalChangeOnLevelUp = 50;
   this.rowsPerLevel = 10;
