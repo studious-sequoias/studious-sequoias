@@ -6,7 +6,7 @@ angular.module('tetris.services', [])
   //Configuration
   ///////////////////
   this.row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  this.boardHeight = 13;
+  this.boardHeight = 20;
   this.interval = 400;
   this.intervalChangeOnLevelUp = 50;
   this.rowsPerLevel = 10;
@@ -65,7 +65,9 @@ angular.module('tetris.services', [])
   this.data = {
     score: 0,
     level: 1,
-    rowsCleared: 0
+    rowsCleared: 0,
+    active: false,
+    ended: false
   };
 
   //Sets this.field to an empty field
@@ -92,13 +94,20 @@ angular.module('tetris.services', [])
   };
   
   //Begin game
-  this.start = function() {
+  this.start = function(demo) {
+    if (this.nextTick) {
+      this.cancelTick();
+    }
     this.resetAnchor();
     this.resetField();
     this.pieceQueue = [this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece(), this.randomPiece()];
     this.nextPiece();
-    this.tick();
+    this.scheduleTick();
     this.activeGame = true;
+    if (!demo) {
+      this.data.active = true;
+    }
+    this.data.ended = false;
   };
 
   this.randomPiece = function() {
@@ -112,6 +121,7 @@ angular.module('tetris.services', [])
     this.currentPiece = this.pieceQueue.shift();
     this.pieceQueue.push(this.randomPiece());
     this.holdLock = false;
+    this.renderField();
   };
 
   this.moveLeft = function() {
@@ -142,10 +152,9 @@ angular.module('tetris.services', [])
     this.findBottom();
     this.bottom.forEach(coord => this.setValAtCoords(this.field, coord[X], coord[Y], this.pieceColor()));
     this.resetAnchor();
-    this.nextPiece();
     this.clearRows();
-    this.renderField();
-    this.tick();
+    this.nextPiece();
+    this.scheduleTick();
   };
 
   this.rotatePiece = function() {
@@ -157,10 +166,10 @@ angular.module('tetris.services', [])
     }
     nextPieceDef = this.pieces[nextPiece.piece][nextPiece.rotate];
 
-    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
+    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
       return;
     }
-    if (this.checkVerticalConflicts(nextPieceDef, this.anchor, this.field)) {
+    if (this.checkHorizontalConflicts(nextPieceDef, this.anchor, this.field)) {
       return;
     }
     this.currentPiece = nextPiece;
@@ -234,8 +243,8 @@ angular.module('tetris.services', [])
   this.checkVerticalConflicts = function(piece, anchor) {
     var mappedPiece = this.mapPieceToAnchor(piece, anchor);
     //If any element of the piece is out of bounds, 
-    if (mappedPiece.some(coord => coord[Y] >= this.boardHeight)) {
-      //The piece has bottomed out
+    if (mappedPiece.some(coord => coord[Y] < 0 || coord[Y] >= this.boardHeight)) {
+      //Conflict
       return true;
     }
 
@@ -301,8 +310,15 @@ angular.module('tetris.services', [])
     }
   };
 
+  this.scheduleTick = function() {
+    this.nextTick = setTimeout(this.tick.bind(this), this.interval);
+  };
+
+  this.cancelTick = function() {
+    clearTimeout(this.nextTick);
+  };
+
   this.tick = function() {
-    this.renderField();
     var proposedAnchor = this.anchor.slice();
     proposedAnchor[Y]++;
     if (this.checkVerticalConflicts(this.piece(), proposedAnchor, this.field)) {
@@ -317,25 +333,29 @@ angular.module('tetris.services', [])
       if (this.field[0].some( col => col ? true : false)) {
         //Game over
         console.log('Game Over');
-        this.activeGame = false;
-        this.endGameCB(this.data.score);
+        if (this.data.active) {
+          this.activeGame = false;
+          this.data.active = false;
+          this.data.ended = true;
+          this.renderField();
+        } else {
+          this.start('demo');
+        }
+        //this.endGameCB(this.data.score);
       } else {
         //Next piece
-        this.nextPiece();
         this.resetAnchor();
+        this.nextPiece();
         this.nextTick = setTimeout(this.tick.bind(this), this.interval);
       }
     } else {
       //Move anchor down a row
       this.anchor = proposedAnchor;
-      this.nextTick = setTimeout(this.tick.bind(this), this.interval);
+      this.scheduleTick();
+      this.renderField();
     }
-
   };
 
-  this.cancelTick = function() {
-    clearTimeout(this.nextTick);
-  };
 })
 
 .service('Scores', function($http) {

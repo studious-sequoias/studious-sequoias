@@ -18,34 +18,34 @@ nav {
 }
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 6px solid black;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 6px solid black;
 }
 
 li {
-    float: left;
-    border-right:2px solid #bbb;
-    background-color: #8585ad;
+  float: left;
+  border-right:2px solid #bbb;
+  background-color: #8585ad;
 }
 
 li:last-child {
-    border-right: none;
+  border-right: none;
 }
 
 li a {
-    /*display: block;*/
-    color: black;
-    text-align: center;
-    padding: 28px 36px;
-    text-decoration: none;
-    font-size: 24pt;
+  /*display: block;*/
+  color: black;
+  text-align: center;
+  padding: 28px 36px;
+  text-decoration: none;
+  font-size: 24pt;
 }
 
 li a:hover {
-    background-color: #ffb31a;
+  background-color: #ffb31a;
 }
 
 h1 {
@@ -57,6 +57,17 @@ h1 {
 a {
   font-family: 'Bungee', cursive;
   color: 'blue';
+}
+
+.button {
+  display: inline-block;
+  margin: 10px auto;
+  /*width: 35%;*/
+}
+
+.button:hover {
+  background-color: #8585ad;
+  cursor: pointer;
 }
 
 /*********** HIGH SCORES TABLE *****************/
@@ -98,9 +109,28 @@ th {
 }
 
 /******************* GAME ******************************/
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, .4);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.vertical-center {
+  /*top: 50%;
+  transform: translateY(-50%);*/
+}
+
 
 /* Main blocks */
-.row{
+.row {
   margin:0;
   height: 40px;
 }
@@ -154,16 +184,16 @@ th {
 /* Queue blocks */
 .mini-row{
   margin:0;
-  height: 10px;
+  height: 20px;
 }
 
 .mini-block {
   display: inline-block;
-  width: 10px;
+  width: 20px;
   height: 100%;
   position: relative;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, .4);
+  /*background: rgba(0, 0, 0, .4);*/
 }
 
 .mini-r {
@@ -196,23 +226,21 @@ th {
 }
 
 /* Info bars */
-#score {
+.info {
   border: 6px solid black;
+  padding: 10px;
   font-size: 35px;
   font-family: 'Bungee', cursive;
   color: black;
   background-color: #ffb31a;
+}
+#score {
   position: absolute;
   left: 77%;
   top: 35%;
 }
 
 #next {
-  border: 6px solid black;
-  font-size: 35px;
-  font-family: 'Bungee', cursive;
-  color: black;
-  background-color: #ffb31a;
   position: absolute;
   left: 7%;
   top: 34%;
