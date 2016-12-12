@@ -73,8 +73,6 @@ a {
   color: 'blue';
 }
 
-
-
 .overlay .info {
   position: absolute;
   right: 0;
@@ -94,15 +92,12 @@ a {
   cursor: pointer;
 }
 
-.overlay > .vertical-center > .button.info {
-  top: 500px;
+.demo .button,
+.pause .button{
+  position: relative;
+  top: 300px;
 }
 
-/*.overlay input {
-  z-index: 10;
-  position: relative;
-  top:300px;
-}*/
 /*********** HIGH SCORES TABLE *****************/
 
 
