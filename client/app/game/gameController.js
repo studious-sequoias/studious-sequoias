@@ -1,9 +1,9 @@
 // client/app/game/gameController.js
 angular.module('tetris.game', [])
 
-.controller('GameController', function($scope, logic, Scores, $location) {
+.controller('GameController', function($scope, logic, Scores, $location, Storage) {
   $scope.data = logic.data;
-  $scope.name = '';
+  $scope.name = Storage.currentUser() || '';
 
   $scope.skipFirstRender = true;
   $scope.startGame = function() {
@@ -25,6 +25,7 @@ angular.module('tetris.game', [])
 
   $scope.submitScore = function(name) {
     if (name) {
+      Storage.currentUser(name); // set current user in case it changed
       Scores.submitScore({name: name, score: $scope.data.score})
       .then(function(response) {
         console.log(response);
