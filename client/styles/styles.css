@@ -73,17 +73,26 @@ a {
   color: 'blue';
 }
 
-.button {
+
+
+.overlay .info {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.button.info {
   display: inline-block;
   margin: 10px auto;
   /*width: 35%;*/
+  position: relative;
+  background-color: #e62e00;
+  top: 250px;
 }
-
 .button:hover {
   background-color: #8585ad;
   cursor: pointer;
 }
-
 /*********** HIGH SCORES TABLE *****************/
 
 .tbody {
