@@ -32,7 +32,7 @@ li {
 }
 
 li:last-child {
-  borer-right: none;
+  border-right: none;
 }
 
 li a {
